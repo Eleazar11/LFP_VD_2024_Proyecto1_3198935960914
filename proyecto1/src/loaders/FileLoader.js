@@ -4,6 +4,7 @@ const path = require('path');
 class FileLoader {
     constructor() {
         this.filePath = ''; // Variable para almacenar la ruta del archivo
+        this.fileContents = ''; // Variable para almacenar el contenido del archivo
     }
 
     // Método para establecer la ruta del archivo
@@ -29,6 +30,7 @@ class FileLoader {
                     reject('Error al leer el archivo: ' + err);
                 } else {
                     try {
+                        this.fileContents = data; // Guardamos el contenido del archivo
                         const parsedData = JSON.parse(data); // Parsear el contenido del archivo JSON
                         resolve(parsedData);
                     } catch (parseError) {
@@ -37,6 +39,11 @@ class FileLoader {
                 }
             });
         });
+    }
+
+    // Método para obtener el contenido del archivo
+    getFileContents() {
+        return this.fileContents;
     }
 }
 

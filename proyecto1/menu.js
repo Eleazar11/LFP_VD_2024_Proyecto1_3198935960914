@@ -1,5 +1,6 @@
 const readline = require('readline');
 const FileLoader = require('./src/loaders/FileLoader');
+const Analyzer = require('./src/analyzer/Analyser');  // Asegúrate de que la ruta sea correcta
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -30,7 +31,7 @@ function showMenu() {
                 showFileLoaderMenu();  // Llama al submenú para cargar archivo
                 break;
             case '2':
-                console.log('Has seleccionado la opción 2');
+                analizarArchivo();
                 showMenu(); // Regresa al menú principal
                 break;
             case '3':
@@ -83,5 +84,14 @@ function showFileLoaderMenu() {
         }
     });
 }
+
+// Función para analizar el archivo cargado
+function analizarArchivo() {
+    const texto = fileLoader.getFileContents(); // Asumiendo que FileLoader tiene un método para obtener el contenido
+    const analyzer = new Analyzer(texto);
+    analyzer.analizarTexto();
+    analyzer.mostrarResultados();
+}
+
 
 module.exports = { welcomeMessage };
