@@ -6,6 +6,7 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
+const fileLoader = new FileLoader();
 
 // Función con un breve mensaje de bienvenida y luego presionar enter para mostrar el menú
 function welcomeMessage() {
@@ -15,7 +16,7 @@ function welcomeMessage() {
     });
 }
 
-// Función que muestra el menú y permite seleccionar una opción
+// Función que muestra el menú principal y permite seleccionar una opción
 function showMenu() {
     console.log('Menu:');
     console.log('1. Cargar Archivo');
@@ -26,27 +27,61 @@ function showMenu() {
     rl.question('Seleccione una opción: ', (option) => {
         switch (option) {
             case '1':
-                console.log('Has seleccionado la opción 1');
+                showFileLoaderMenu();  // Llama al submenú para cargar archivo
                 break;
             case '2':
                 console.log('Has seleccionado la opción 2');
+                showMenu(); // Regresa al menú principal
                 break;
             case '3':
                 console.log('Has seleccionado la opción 3');
+                showMenu(); // Regresa al menú principal
                 break;
             case '4':
                 console.log('Has seleccionado la opción 4');
+                showMenu(); // Regresa al menú principal
                 break;
             case '0':
                 console.log('Saliendo...');
-                rl.close();
-                return;
+                rl.close(); // Cierra la interfaz de readline
+                break;
             default:
                 console.log('Opción no válida');
+                showMenu(); // Regresa al menú principal
         }
-        showMenu();
     });
 }
 
-// Exportar la función welcomeMessage
-module.exports = { welcomeMessage }; 
+// Submenú para cargar el archivo
+function showFileLoaderMenu() {
+    console.log('Submenú de FileLoader:');
+    console.log('1. Ingresar ruta para cargar archivo');
+    console.log('2. Volver al menú principal');
+    rl.question('Seleccione una opción: ', (option) => {
+        switch (option) {
+            case '1':
+                rl.question('Por favor, ingrese la ruta del archivo JSON: ', (filePath) => {
+                    fileLoader.setFilePath(filePath);
+                    fileLoader.readFile()
+                        .then(data => {
+                            console.log('Archivo cargado con éxito:');
+                            console.log(data); // Muestra el contenido del archivo
+                            showFileLoaderMenu(); // Regresa al submenú para más opciones
+                        })
+                        .catch(err => {
+                            console.log('Error al cargar el archivo:', err);
+                            showFileLoaderMenu(); // Regresa al submenú para más opciones
+                        });
+                });
+                break;
+            case '2':
+                showMenu(); // Regresa al menú principal
+                break;
+            default:
+                console.log('Opción no válida');
+                showFileLoaderMenu(); // Regresa al submenú para más opciones
+        }
+    });
+}
+
+module.exports = { welcomeMessage };
