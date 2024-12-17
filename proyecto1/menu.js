@@ -6,8 +6,6 @@ const rl = readline.createInterface({
     output: process.stdout
 });
 
-// Instancia de la clase FileLoader
-const fileLoader = new FileLoader();
 
 // Función con un breve mensaje de bienvenida y luego presionar enter para mostrar el menú
 function welcomeMessage() {
@@ -51,4 +49,4 @@ function showMenu() {
 }
 
 // Exportar la función welcomeMessage
-module.exports = { welcomeMessage };
+module.exports = { welcomeMessage }; 
