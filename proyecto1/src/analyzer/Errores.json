@@ -4,50 +4,6 @@
         "descripcion": "Caracter no reconocido"
     },
     {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": "[",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ".",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ".",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
         "valor": "\r",
         "descripcion": "Caracter no reconocido"
     },
@@ -60,51 +16,7 @@
         "descripcion": "Caracter no reconocido"
     },
     {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
         "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ".",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ":",
         "descripcion": "Caracter no reconocido"
     },
     {
@@ -124,34 +36,6 @@
         "descripcion": "Caracter no reconocido"
     },
     {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
         "valor": "\r",
         "descripcion": "Caracter no reconocido"
     },
@@ -160,11 +44,7 @@
         "descripcion": "Caracter no reconocido"
     },
     {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ".",
+        "valor": "\r",
         "descripcion": "Caracter no reconocido"
     },
     {
@@ -180,7 +60,7 @@
         "descripcion": "Caracter no reconocido"
     },
     {
-        "valor": ":",
+        "valor": "\r",
         "descripcion": "Caracter no reconocido"
     },
     {
@@ -188,15 +68,7 @@
         "descripcion": "Caracter no reconocido"
     },
     {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
         "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ":",
         "descripcion": "Caracter no reconocido"
     },
     {
@@ -212,23 +84,11 @@
         "descripcion": "Caracter no reconocido"
     },
     {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
         "valor": "\r",
         "descripcion": "Caracter no reconocido"
     },
     {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
         "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ":",
         "descripcion": "Caracter no reconocido"
     },
     {
@@ -240,19 +100,11 @@
         "descripcion": "Caracter no reconocido"
     },
     {
-        "valor": "]",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
         "valor": "\r",
         "descripcion": "Caracter no reconocido"
     },
     {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": "[",
+        "valor": "\r",
         "descripcion": "Caracter no reconocido"
     },
     {
@@ -264,23 +116,11 @@
         "descripcion": "Caracter no reconocido"
     },
     {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
         "valor": "\r",
         "descripcion": "Caracter no reconocido"
     },
     {
-        "valor": ":",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
         "valor": "\r",
-        "descripcion": "Caracter no reconocido"
-    },
-    {
-        "valor": ":",
         "descripcion": "Caracter no reconocido"
     },
     {
@@ -292,7 +132,35 @@
         "descripcion": "Caracter no reconocido"
     },
     {
-        "valor": "]",
+        "valor": "\r",
+        "descripcion": "Caracter no reconocido"
+    },
+    {
+        "valor": "\r",
+        "descripcion": "Caracter no reconocido"
+    },
+    {
+        "valor": "\r",
+        "descripcion": "Caracter no reconocido"
+    },
+    {
+        "valor": "\r",
+        "descripcion": "Caracter no reconocido"
+    },
+    {
+        "valor": "\r",
+        "descripcion": "Caracter no reconocido"
+    },
+    {
+        "valor": "\r",
+        "descripcion": "Caracter no reconocido"
+    },
+    {
+        "valor": "\r",
+        "descripcion": "Caracter no reconocido"
+    },
+    {
+        "valor": "\r",
         "descripcion": "Caracter no reconocido"
     },
     {

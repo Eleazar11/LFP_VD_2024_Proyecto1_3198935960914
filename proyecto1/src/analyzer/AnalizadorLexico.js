@@ -17,8 +17,13 @@ class AnalizadorLexico {
         this.palabrasReservadas = [
             'if', 'else', 'while', 'for', 'int', 'float', 'char', 'string',
             'bool', 'true', 'false', 'void', 'return', 'break', 'continue',
-            'function', 'let', 'const',
+            'function', 'let', 'const', 'operaciones', 'operacion', 'valor1', 'valor2',
         ];
+
+        this.identificadoresValidos = [
+            'suma', 'resta', 'multiplicacion', 'division', 'potencia', 'seno',
+        ];
+
         this.lexemas = [];
         this.errores = [];
     }
@@ -35,19 +40,23 @@ class AnalizadorLexico {
                 continue;
             }
 
-            // Detectar números
+            // Detectar números (incluyendo flotantes)
             if (codigo >= 48 && codigo <= 57) {
                 let numero = '';
-                while (codigo >= 48 && codigo <= 57) {
+                let esDecimal = false;
+
+                while ((codigo >= 48 && codigo <= 57) || (codigo === 46 && !esDecimal)) {
+                    if (codigo === 46) esDecimal = true; // Detectar punto decimal
                     numero += texto[contador];
                     contador++;
                     codigo = texto.charCodeAt(contador);
                 }
+
                 this.lexemas.push(new Lexema('Número', numero));
                 continue;
             }
 
-            // Detectar palabras reservadas e identificadores
+            // Detectar palabras reservadas y claves JSON
             if ((codigo >= 65 && codigo <= 90) || (codigo >= 97 && codigo <= 122)) {
                 let palabra = '';
                 while ((codigo >= 65 && codigo <= 90) || (codigo >= 97 && codigo <= 122)) {
@@ -55,6 +64,7 @@ class AnalizadorLexico {
                     contador++;
                     codigo = texto.charCodeAt(contador);
                 }
+
                 if (this.palabrasReservadas.includes(palabra)) {
                     this.lexemas.push(new Lexema('Palabra reservada', palabra));
                 } else {
@@ -63,7 +73,7 @@ class AnalizadorLexico {
                 continue;
             }
 
-            // Detectar operadores
+            // Detectar operadores (+, -, *, /)
             if ([43, 45, 42, 47].includes(codigo)) { // +, -, *, /
                 this.lexemas.push(new Lexema('Operador', texto[contador]));
                 contador++;
@@ -78,7 +88,10 @@ class AnalizadorLexico {
                 125: 'Llave de cierre',
                 59: 'Punto y coma',
                 44: 'Coma',
-                61: 'Igual',
+                58: 'Dos puntos',
+                91: 'Corchete de apertura',
+                93: 'Corchete de cierre',
+                46: 'Punto',
             };
             if (simbolos[codigo]) {
                 this.lexemas.push(new Lexema(simbolos[codigo], texto[contador]));
@@ -86,18 +99,25 @@ class AnalizadorLexico {
                 continue;
             }
 
-            // Detectar cadenas
+            // Detectar cadenas (valores en JSON como "suma", "resta", etc.)
             if (codigo === 34) { // Comilla doble "
                 let cadena = '';
                 contador++;
                 codigo = texto.charCodeAt(contador);
-                while (codigo !== 34) {
+                while (codigo !== 34 && contador < texto.length) {
                     cadena += texto[contador];
                     contador++;
                     codigo = texto.charCodeAt(contador);
                 }
-                this.lexemas.push(new Lexema('Cadena', cadena));
-                contador++;
+
+                if (this.identificadoresValidos.includes(cadena)) {
+                    this.lexemas.push(new Lexema('Identificador válido', cadena));
+                } else if (this.palabrasReservadas.includes(cadena)) {
+                    this.lexemas.push(new Lexema('Palabra reservada', cadena));
+                } else {
+                    this.lexemas.push(new Lexema('Cadena', cadena));
+                }
+                contador++; // Consumir la comilla de cierre
                 continue;
             }
 
