@@ -1,6 +1,7 @@
 const readline = require('readline');
 const FileLoader = require('./src/loaders/FileLoader');
-const Analyzer = require('./src/analyzer/Analyser');  // Asegúrate de que la ruta sea correcta
+const AnalizadorLexico = require('./src/analyzer/AnalizadorLexico'); // Importamos el analizador
+const GeneradorDeReportes = require('./src/analyzer/GeneradorDeReportes'); // Importamos el generador de reportes
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -8,8 +9,9 @@ const rl = readline.createInterface({
 });
 
 const fileLoader = new FileLoader();
+const analizador = new AnalizadorLexico(); // Instanciamos el analizador léxico
+let texto = ''; // Variable global para almacenar el contenido del archivo
 
-// Función con un breve mensaje de bienvenida y luego presionar enter para mostrar el menú
 function welcomeMessage() {
     console.log('Bienvenido al proyecto 1 de lenguajes formales y de programación');
     rl.question('Presiona enter para mostrar el menú', () => {
@@ -17,43 +19,38 @@ function welcomeMessage() {
     });
 }
 
-// Función que muestra el menú principal y permite seleccionar una opción
 function showMenu() {
     console.log('Menu:');
     console.log('1. Cargar Archivo');
     console.log('2. Analizar archivo');
     console.log('3. Generar archivo de errores');
-    console.log('4. Reportes');
+    console.log('4. Generar reporte de lexemas y tokens');
     console.log('0. Salir');
     rl.question('Seleccione una opción: ', (option) => {
         switch (option) {
             case '1':
-                showFileLoaderMenu();  // Llama al submenú para cargar archivo
+                showFileLoaderMenu();
                 break;
             case '2':
-                analizarArchivo();
-                showMenu(); // Regresa al menú principal
+                analizarArchivo(); // Función para analizar el archivo
                 break;
             case '3':
-                console.log('Has seleccionado la opción 3');
-                showMenu(); // Regresa al menú principal
+                generarArchivoDeErrores();
                 break;
             case '4':
-                console.log('Has seleccionado la opción 4');
-                showMenu(); // Regresa al menú principal
+                generarReporteDeLexemasTokens();
                 break;
             case '0':
                 console.log('Saliendo...');
-                rl.close(); // Cierra la interfaz de readline
+                rl.close();
                 break;
             default:
                 console.log('Opción no válida');
-                showMenu(); // Regresa al menú principal
+                showMenu();
         }
     });
 }
 
-// Submenú para cargar el archivo
 function showFileLoaderMenu() {
     console.log('Submenú de FileLoader:');
     console.log('1. Ingresar ruta para cargar archivo');
@@ -66,31 +63,61 @@ function showFileLoaderMenu() {
                     fileLoader.readFile()
                         .then(data => {
                             console.log('Archivo cargado con éxito:');
-                            console.log(data); // Muestra el contenido del archivo
-                            showFileLoaderMenu(); // Regresa al submenú para más opciones
+                            console.log(data);
+                            texto = fileLoader.getFileContents();
+                            console.log('Contenido del archivo cargado.');
+                            showFileLoaderMenu();
                         })
                         .catch(err => {
                             console.log('Error al cargar el archivo:', err);
-                            showFileLoaderMenu(); // Regresa al submenú para más opciones
+                            showFileLoaderMenu();
                         });
                 });
                 break;
             case '2':
-                showMenu(); // Regresa al menú principal
+                showMenu();
                 break;
             default:
                 console.log('Opción no válida');
-                showFileLoaderMenu(); // Regresa al submenú para más opciones
+                showFileLoaderMenu();
         }
     });
 }
 
-// Función para analizar el archivo cargado
+// Función para analizar el archivo
 function analizarArchivo() {
-    const texto = fileLoader.getFileContents(); // Asumiendo que FileLoader tiene un método para obtener el contenido
-    const analyzer = new Analyzer(texto);
-    analyzer.analizarTexto();
-    analyzer.mostrarResultados();
+    if (!texto) {
+        console.log('Primero debes cargar un archivo.');
+        showMenu();
+        return;
+    }
+    analizador.analizarTexto(texto);
+    console.log('Análisis completado. Se encontraron los siguientes lexemas:');
+    const lexemas = analizador.obtenerTablaDeLexemas();
+    lexemas.forEach(lexema => console.log(lexema));
+    showMenu();
+}
+
+// Generar archivo de errores
+function generarArchivoDeErrores() {
+    const errores = analizador.errores;
+    if (errores.length === 0) {
+        console.log('No se encontraron errores.');
+    } else {
+        GeneradorDeReportes.generarReporteJSON('Errores', errores);
+        console.log('Archivo de errores generado exitosamente.');
+    }
+    showMenu();
+}
+
+// Generar reporte de lexemas y tokens
+function generarReporteDeLexemasTokens() {
+    const lexemas = analizador.obtenerTablaDeLexemas();
+    const tokens = analizador.obtenerTablaDeTokens();
+    GeneradorDeReportes.generarReporteJSON('Lexemas', lexemas);
+    GeneradorDeReportes.generarReporteJSON('Tokens', tokens);
+    console.log('Reporte de lexemas y tokens generado exitosamente.');
+    showMenu();
 }
 
 
