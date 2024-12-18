@@ -95,6 +95,8 @@ function analizarArchivo() {
     console.log('Análisis completado. Se encontraron los siguientes lexemas:');
     const lexemas = analizador.obtenerTablaDeLexemas();
     lexemas.forEach(lexema => console.log(lexema));
+    console.log('Errores léxicos encontrados:');
+    analizador.errores.forEach(error => console.log(error));
     showMenu();
 }
 
@@ -119,6 +121,7 @@ function generarReporteDeLexemasTokens() {
     console.log('Reporte de lexemas y tokens generado exitosamente.');
     showMenu();
 }
+
 
 
 module.exports = { welcomeMessage };
