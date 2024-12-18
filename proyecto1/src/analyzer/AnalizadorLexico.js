@@ -34,8 +34,8 @@ class AnalizadorLexico {
         while (contador < texto.length) {
             let codigo = texto.charCodeAt(contador);
 
-            // Ignorar espacios, saltos de línea y tabulaciones
-            if ([32, 10, 9].includes(codigo)) {
+            // Ignorar espacios, saltos de línea, tabulaciones y retorno de carro
+            if ([32, 10, 9, 13].includes(codigo)) {
                 contador++;
                 continue;
             }
