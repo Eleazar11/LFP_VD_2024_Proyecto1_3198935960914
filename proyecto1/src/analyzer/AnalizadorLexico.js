@@ -142,7 +142,13 @@ class AnalizadorLexico {
                     if (char !== '"' && char !== '\0') {
                         lexemaActual += char;
                     } else if (char === '"') {
-                        agregarLexema('Cadena');
+                        if (this.palabrasReservadas.includes(lexemaActual)) {
+                            agregarLexema('Palabra reservada');
+                        } else if (this.identificadoresValidos.includes(lexemaActual)) {
+                            agregarLexema('Identificador');
+                        } else {
+                            agregarLexema('Cadena');
+                        }
                         estado = 0;
                     }
                     break;
@@ -169,6 +175,10 @@ class AnalizadorLexico {
             fila: lexema.fila,
             columna: lexema.columna,
         }));
+    }
+
+    obtenerTablaDeTokens() {
+        return this.obtenerTablaDeLexemas();
     }
 }
 

@@ -24,7 +24,7 @@ function showMenu() {
     console.log('1. Cargar Archivo');
     console.log('2. Analizar archivo');
     console.log('3. Generar archivo de errores');
-    console.log('4. Generar reporte de lexemas y tokens');
+    console.log('4. Generar archivo de tokens');
     console.log('0. Salir');
     rl.question('Seleccione una opción: ', (option) => {
         switch (option) {
@@ -129,7 +129,7 @@ function analizarArchivo() {
 function generarArchivoDeErrores() {
     const errores = analizador.errores;
     if (errores.length === 0) {
-        console.log('No se encontraron errores.');
+        console.log('No se encontraron errores o no ha agregado el archivo.');
     } else {
         GeneradorDeReportes.generarReporteJSON('Errores', errores);
         console.log('Archivo de errores generado exitosamente.');
@@ -139,11 +139,11 @@ function generarArchivoDeErrores() {
 
 // Generar reporte de lexemas y tokens
 function generarReporteDeLexemasTokens() {
-    const lexemas = analizador.obtenerTablaDeLexemas();
+    //const lexemas = analizador.obtenerTablaDeLexemas();
     const tokens = analizador.obtenerTablaDeTokens();
-    GeneradorDeReportes.generarReporteJSON('Lexemas', lexemas);
+    //GeneradorDeReportes.generarReporteJSON('Lexemas', lexemas);
     GeneradorDeReportes.generarReporteJSON('Tokens', tokens);
-    console.log('Reporte de lexemas y tokens generado exitosamente.');
+    console.log('Archivo json de tokens generado exitosamente.');
     showMenu();
 }
 
