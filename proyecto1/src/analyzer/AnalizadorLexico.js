@@ -36,7 +36,15 @@ class AnalizadorLexico {
         this.columna = 1;
     }
 
+    reset() {
+        this.lexemas = [];
+        this.errores = [];
+        this.fila = 1;
+        this.columna = 1;
+    }
+
     analizarTexto(texto) {
+        this.reset(); // Aseguramos que esté limpio antes de comenzar
         let contador = 0;
         let estado = 0;
         let lexemaActual = '';
@@ -151,13 +159,7 @@ class AnalizadorLexico {
                     if (char !== '"' && char !== '\0') {
                         lexemaActual += char;
                     } else if (char === '"') {
-                        if (this.palabrasReservadas.includes(lexemaActual)) {
-                            agregarLexema('Palabra reservada');
-                        } else if (this.identificadoresValidos.includes(lexemaActual)) {
-                            agregarLexema('Identificador');
-                        } else {
-                            agregarLexema('Cadena');
-                        }
+                        agregarLexema('Cadena');
                         estado = 0;
                     }
                     break;

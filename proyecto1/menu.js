@@ -54,18 +54,20 @@ function showMenu() {
 function showFileLoaderMenu() {
     console.log('Submenú de FileLoader:');
     console.log('1. Ingresar ruta para cargar archivo');
-    console.log('2. Volver al menú principal');
+    console.log('2. Intentar parsear archivo como JSON');
+    console.log('3. Volver al menú principal');
     rl.question('Seleccione una opción: ', (option) => {
         switch (option) {
-            case '1':
-                rl.question('Por favor, ingrese la ruta del archivo JSON: ', (filePath) => {
+            case '1': // Cargar archivo
+                rl.question('Por favor, ingrese la ruta del archivo: ', (filePath) => {
+                    fileLoader.clearFileContents(); // Limpiar contenido previo
                     fileLoader.setFilePath(filePath);
                     fileLoader.readFile()
                         .then(data => {
-                            console.log('Archivo cargado con éxito:');
+                            console.log('Archivo cargado con éxito.');
+                            console.log('Contenido del archivo:');
                             console.log(data);
                             texto = fileLoader.getFileContents();
-                            console.log('Contenido del archivo cargado.');
                             showFileLoaderMenu();
                         })
                         .catch(err => {
@@ -74,9 +76,24 @@ function showFileLoaderMenu() {
                         });
                 });
                 break;
-            case '2':
+
+            case '2': // Intentar parsear como JSON
+                fileLoader.parseAsJSON()
+                    .then(parsedData => {
+                        console.log('Archivo parseado como JSON con éxito:');
+                        console.log(parsedData);
+                        showFileLoaderMenu();
+                    })
+                    .catch(err => {
+                        console.log('Error al parsear el archivo como JSON:', err);
+                        showFileLoaderMenu();
+                    });
+                break;
+
+            case '3': // Volver al menú principal
                 showMenu();
                 break;
+
             default:
                 console.log('Opción no válida');
                 showFileLoaderMenu();
@@ -84,6 +101,8 @@ function showFileLoaderMenu() {
     });
 }
 
+
+// Función para analizar el archivo
 // Función para analizar el archivo
 function analizarArchivo() {
     if (!texto) {
@@ -91,14 +110,20 @@ function analizarArchivo() {
         showMenu();
         return;
     }
+
+    analizador.reset(); // Limpia lexemas y errores previos
     analizador.analizarTexto(texto);
+
     console.log('Análisis completado. Se encontraron los siguientes lexemas:');
     const lexemas = analizador.obtenerTablaDeLexemas();
     lexemas.forEach(lexema => console.log(lexema));
+
     console.log('Errores léxicos encontrados:');
     analizador.errores.forEach(error => console.log(error));
+
     showMenu();
 }
+
 
 // Generar archivo de errores
 function generarArchivoDeErrores() {
