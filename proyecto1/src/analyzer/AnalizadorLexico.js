@@ -43,6 +43,17 @@ class AnalizadorLexico {
         let filaInicio = this.fila;
         let columnaInicio = this.columna;
 
+        const avanzarPosicion = (char) => {
+            if (char === '\n') {
+                this.fila++;
+                this.columna = 1;
+            } else if (char === '\t') {
+                this.columna += 4; // Avance por tabulaciones
+            } else if (char !== '\r') { // Ignorar retorno de carro
+                this.columna++;
+            }
+        };
+
         const agregarLexema = (tipo) => {
             this.lexemas.push(new Lexema(tipo, lexemaActual, filaInicio, columnaInicio));
             lexemaActual = '';
@@ -71,7 +82,7 @@ class AnalizadorLexico {
                     } else if (char === '.') { // Punto
                         lexemaActual += char;
                         estado = 3;
-                    } else if (char === '"') { // Comillas dobles (inicio de cadena)
+                    } else if (char === '"') { // Comillas dobles
                         estado = 4;
                     } else if ('()+-*/{}[]:;,'.includes(char)) { // Símbolos
                         lexemaActual += char;
@@ -88,12 +99,7 @@ class AnalizadorLexico {
                             '.': 'Punto',
                         }[char]);
                     } else if (/\s/.test(char)) { // Espacios y saltos de línea
-                        if (char === '\n') {
-                            this.fila++;
-                            this.columna = 1;
-                        } else {
-                            this.columna++;
-                        }
+                        avanzarPosicion(char);
                     } else if (char === '\0') { // Fin de texto
                         break;
                     } else { // Caracter no reconocido
@@ -106,11 +112,10 @@ class AnalizadorLexico {
                     if (/[a-zA-Z0-9]/.test(char)) {
                         lexemaActual += char;
                     } else {
-                        // Primero revisamos si el lexema es una palabra reservada
                         if (this.palabrasReservadas.includes(lexemaActual)) {
                             agregarLexema('Palabra reservada');
                         } else if (this.identificadoresValidos.includes(lexemaActual)) {
-                            agregarLexema('Identificador ');
+                            agregarLexema('Identificador');
                         } else {
                             agregarLexema('Identificador no válido');
                         }
@@ -146,16 +151,11 @@ class AnalizadorLexico {
                     if (char !== '"' && char !== '\0') {
                         lexemaActual += char;
                     } else if (char === '"') {
-                        // Primero ver si es palabra reservada
                         if (this.palabrasReservadas.includes(lexemaActual)) {
                             agregarLexema('Palabra reservada');
-                        }
-                        // Si no es palabra reservada, ver si es identificador
-                        else if (this.identificadoresValidos.includes(lexemaActual)) {
+                        } else if (this.identificadoresValidos.includes(lexemaActual)) {
                             agregarLexema('Identificador');
-                        } 
-                        // Si no es ninguno de los dos, lo clasificamos como cadena
-                        else {
+                        } else {
                             agregarLexema('Cadena');
                         }
                         estado = 0;
@@ -168,8 +168,11 @@ class AnalizadorLexico {
                     break;
             }
 
+            if (estado !== 0 || /\S/.test(char)) {
+                avanzarPosicion(char);
+            }
+
             contador++;
-            this.columna++;
         }
     }
 

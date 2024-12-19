@@ -10,7 +10,7 @@ const rl = readline.createInterface({
 
 const fileLoader = new FileLoader();
 const analizador = new AnalizadorLexico(); // Instanciamos el analizador léxico
-let texto = ''; // Variable global para almacenar el contenido del archivo
+let texto = ``; // Variable global para almacenar el contenido del archivo
 
 function welcomeMessage() {
     console.log('Bienvenido al proyecto 1 de lenguajes formales y de programación');
