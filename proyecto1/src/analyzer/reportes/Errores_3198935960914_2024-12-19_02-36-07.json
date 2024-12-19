@@ -1,0 +1,20 @@
+[
+    {
+        "valor": "!",
+        "descripcion": "Caracter no reconocido",
+        "fila": 1,
+        "columna": 3
+    },
+    {
+        "valor": "?",
+        "descripcion": "Caracter no reconocido",
+        "fila": 3,
+        "columna": 9
+    },
+    {
+        "valor": "!",
+        "descripcion": "Caracter no reconocido",
+        "fila": 16,
+        "columna": 9
+    }
+]

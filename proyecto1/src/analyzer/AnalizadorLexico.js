@@ -1,20 +1,5 @@
-class Lexema {
-    constructor(tipo, valor, fila, columna) {
-        this.tipo = tipo;
-        this.valor = valor;
-        this.fila = fila;
-        this.columna = columna;
-    }
-}
-
-class ErrorLexico {
-    constructor(valor, descripcion, fila, columna) {
-        this.valor = valor;
-        this.descripcion = descripcion;
-        this.fila = fila;
-        this.columna = columna;
-    }
-}
+const Lexema = require('./Lexema');
+const ErrorLexico = require('./ErrorLexico');
 
 class AnalizadorLexico {
     constructor() {
@@ -44,7 +29,7 @@ class AnalizadorLexico {
     }
 
     analizarTexto(texto) {
-        this.reset(); // Aseguramos que esté limpio antes de comenzar
+        this.reset();
         let contador = 0;
         let estado = 0;
         let lexemaActual = '';
@@ -56,8 +41,8 @@ class AnalizadorLexico {
                 this.fila++;
                 this.columna = 1;
             } else if (char === '\t') {
-                this.columna += 4; // Avance por tabulaciones
-            } else if (char !== '\r') { // Ignorar retorno de carro
+                this.columna += 4;
+            } else if (char !== '\r') {
                 this.columna++;
             }
         };
@@ -73,26 +58,24 @@ class AnalizadorLexico {
         };
 
         while (contador <= texto.length) {
-            let char = texto[contador] || '\0'; // Caracter actual o fin de cadena
-            let codigo = char.charCodeAt(0);
-
+            let char = texto[contador] || '\0';
             switch (estado) {
-                case 0: // Estado inicial
+                case 0:
                     filaInicio = this.fila;
                     columnaInicio = this.columna;
 
-                    if (/[a-zA-Z]/.test(char)) { // Letras
+                    if (/[a-zA-Z]/.test(char)) {
                         lexemaActual += char;
                         estado = 1;
-                    } else if (/[0-9]/.test(char)) { // Dígitos
+                    } else if (/[0-9]/.test(char)) {
                         lexemaActual += char;
                         estado = 2;
-                    } else if (char === '.') { // Punto
+                    } else if (char === '.') {
                         lexemaActual += char;
                         estado = 3;
-                    } else if (char === '"') { // Comillas dobles
+                    } else if (char === '"') {
                         estado = 4;
-                    } else if ('()+-*/{}[]:;,'.includes(char)) { // Símbolos
+                    } else if ('()+-*/{}[]:;,'.includes(char)) {
                         lexemaActual += char;
                         agregarLexema({
                             '(': 'Paréntesis de apertura',
@@ -106,17 +89,17 @@ class AnalizadorLexico {
                             ',': 'Coma',
                             '.': 'Punto',
                         }[char]);
-                    } else if (/\s/.test(char)) { // Espacios y saltos de línea
+                    } else if (/\s/.test(char)) {
                         avanzarPosicion(char);
-                    } else if (char === '\0') { // Fin de texto
+                    } else if (char === '\0') {
                         break;
-                    } else { // Caracter no reconocido
+                    } else {
                         lexemaActual += char;
                         agregarError('Caracter no reconocido');
                     }
                     break;
 
-                case 1: // Identificadores o palabras reservadas
+                case 1:
                     if (/[a-zA-Z0-9]/.test(char)) {
                         lexemaActual += char;
                     } else {
@@ -132,7 +115,7 @@ class AnalizadorLexico {
                     }
                     break;
 
-                case 2: // Números
+                case 2:
                     if (/[0-9]/.test(char)) {
                         lexemaActual += char;
                     } else if (char === '.') {
@@ -145,7 +128,7 @@ class AnalizadorLexico {
                     }
                     break;
 
-                case 3: // Números decimales
+                case 3:
                     if (/[0-9]/.test(char)) {
                         lexemaActual += char;
                     } else {
@@ -155,7 +138,7 @@ class AnalizadorLexico {
                     }
                     break;
 
-                case 4: // Cadenas
+                case 4:
                     if (char !== '"' && char !== '\0') {
                         lexemaActual += char;
                     } else if (char === '"') {
