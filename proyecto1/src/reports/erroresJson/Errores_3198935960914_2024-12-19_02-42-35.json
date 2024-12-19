@@ -1,20 +1,20 @@
 [
     {
-        "valor": "!",
+        "valor": "?",
         "descripcion": "Caracter no reconocido",
         "fila": 1,
         "columna": 3
     },
     {
-        "valor": "?",
+        "valor": "¡",
         "descripcion": "Caracter no reconocido",
-        "fila": 3,
-        "columna": 9
+        "fila": 8,
+        "columna": 8
     },
     {
-        "valor": "!",
+        "valor": "¡",
         "descripcion": "Caracter no reconocido",
-        "fila": 16,
-        "columna": 9
+        "fila": 17,
+        "columna": 8
     }
 ]
