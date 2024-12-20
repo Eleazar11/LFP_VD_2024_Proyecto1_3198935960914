@@ -4,3 +4,4 @@ const { welcomeMessage } = require('./menu'); // Importar la función desde menu
 welcomeMessage();
 
 //C:\Users\USUARIO\Desktop\LFP_2024\prueba.json
+//C:\Users\USUARIO\Downloads\Entrada.json

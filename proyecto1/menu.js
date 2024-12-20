@@ -4,6 +4,7 @@ const AnalizadorLexico = require('./src/analyzer/AnalizadorLexico'); // Importam
 const GeneradorDeReportes = require('./src/analyzer/GeneradorDeReportes'); // Importamos el generador de reportes
 const GeneradorDeReportesHTMLErrores = require('./src/analyzer/GeneradorDeReportesHTMLErrores');
 const GeneradorDeReportesHTMLTokens = require('./src/analyzer/GeneradorDeReportesHTMLTokens');
+const OperacionesParser = require('./src/operations/OperacionesParser');
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -27,6 +28,7 @@ function showMenu() {
     console.log('2. Analizar archivo');
     console.log('3. Generar archivos json');
     console.log('4. Generar reportes HTML');
+    console.log('5. Analizar operaciones');
     console.log('0. Salir');
     rl.question('Seleccione una opción: ', (option) => {
         switch (option) {
@@ -41,6 +43,9 @@ function showMenu() {
                 break;
             case '4':
                 showGenerateHTMLReportsMenu(); // Redirigir al submenú de reportes HTML
+                break;
+            case '5':
+                analizarOperaciones();
                 break;
             case '0':
                 console.log('Saliendo...');
@@ -218,6 +223,20 @@ function generarReporteHTMLDeTokens() {
     }
     showGenerateHTMLReportsMenu();
 }
+function analizarOperaciones() {
+    if (!texto) {
+        console.log('Primero debes cargar un archivo.');
+        showMenu();
+        return;
+    }
+
+    console.log('Procesando operaciones del archivo...');
+    const parser = new OperacionesParser(texto);
+    parser.parsearOperaciones();
+
+    showMenu();
+}
+
 
 
 module.exports = { welcomeMessage };
