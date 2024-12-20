@@ -2,6 +2,8 @@ const readline = require('readline');
 const FileLoader = require('./src/loaders/FileLoader');
 const AnalizadorLexico = require('./src/analyzer/AnalizadorLexico'); // Importamos el analizador
 const GeneradorDeReportes = require('./src/analyzer/GeneradorDeReportes'); // Importamos el generador de reportes
+const GeneradorDeReportesHTMLErrores = require('./src/analyzer/GeneradorDeReportesHTMLErrores');
+const GeneradorDeReportesHTMLTokens = require('./src/analyzer/GeneradorDeReportesHTMLTokens');
 
 const rl = readline.createInterface({
     input: process.stdin,
@@ -24,7 +26,7 @@ function showMenu() {
     console.log('1. Cargar Archivo');
     console.log('2. Analizar archivo');
     console.log('3. Generar archivos json');
-    console.log('4. Generar reportes');
+    console.log('4. Generar reportes HTML');
     console.log('0. Salir');
     rl.question('Seleccione una opción: ', (option) => {
         switch (option) {
@@ -35,10 +37,10 @@ function showMenu() {
                 analizarArchivo(); // Función para analizar el archivo
                 break;
             case '3':
-                showGenerateFilesMenu(); // Redirigir al submenú
+                showGenerateJSONFilesMenu() // Redirigir al submenú
                 break;
             case '4':
-                console.log('opcion 4');
+                showGenerateHTMLReportsMenu(); // Redirigir al submenú de reportes HTML
                 break;
             case '0':
                 console.log('Saliendo...');
@@ -126,10 +128,10 @@ function analizarArchivo() {
 }
 
 // Función para mostrar el submenú de generación de archivos JSON
-function showGenerateFilesMenu() {
+function showGenerateJSONFilesMenu() {
     console.log('Submenú: Generar Archivos JSON');
-    console.log('1. Generar archivo de errores');
-    console.log('2. Generar archivo de tokens');
+    console.log('1. Generar archivo JSON de errores');
+    console.log('2. Generar archivo JSON de tokens');
     console.log('3. Regresar al menú principal');
     rl.question('Seleccione una opción: ', (subOption) => {
         switch (subOption) {
@@ -144,35 +146,78 @@ function showGenerateFilesMenu() {
                 break;
             default:
                 console.log('Opción no válida');
-                showGenerateFilesMenu();
+                showGenerateJSONFilesMenu();
         }
     });
 }
 
-// Generar archivo de errores
+// Generar archivo de errores en formato JSON
 function generarArchivoDeErrores() {
     const errores = analizador.errores;
     if (errores.length === 0) {
         console.log('No se encontraron errores o no ha agregado el archivo.');
     } else {
         GeneradorDeReportes.generarReporteJSON('Errores', errores);
-        console.log('Archivo de errores generado exitosamente.');
+        console.log('Archivo JSON de errores generado exitosamente.');
     }
-    showGenerateFilesMenu();
+    showGenerateJSONFilesMenu();
 }
 
-// Generar reporte de lexemas y tokens
+// Generar archivo de tokens en formato JSON
 function generarReporteDeLexemasTokens() {
     const tokens = analizador.obtenerTablaDeTokens();
     if (!tokens || tokens.length === 0) {
         console.log('No se encontraron tokens o no ha analizado el archivo.');
     } else {
         GeneradorDeReportes.generarReporteJSON('Tokens', tokens);
-        console.log('Archivo json de tokens generado exitosamente.');
+        console.log('Archivo JSON de tokens generado exitosamente.');
     }
-    showGenerateFilesMenu();
+    showGenerateJSONFilesMenu();
 }
 
+// Función para mostrar el submenú de generación de reportes HTML
+function showGenerateHTMLReportsMenu() {
+    console.log('Submenú: Generar Reportes HTML');
+    console.log('1. Generar reporte HTML de errores');
+    console.log('2. Generar reporte HTML de tokens');
+    console.log('3. Regresar al menú principal');
+    rl.question('Seleccione una opción: ', (subOption) => {
+        switch (subOption) {
+            case '1':
+                generarReporteHTMLDeErrores();
+                break;
+            case '2':
+                generarReporteHTMLDeTokens();
+                break;
+            case '3':
+                showMenu();
+                break;
+            default:
+                console.log('Opción no válida');
+                showGenerateHTMLReportsMenu();
+        }
+    });
+}
+
+function generarReporteHTMLDeErrores() {
+    const errores = analizador.errores;
+    if (errores.length === 0) {
+        console.log('No se encontraron errores o no ha agregado el archivo.');
+    } else {
+        GeneradorDeReportesHTMLErrores.generarReporteHTML('Errores', errores);
+    }
+    showGenerateHTMLReportsMenu();
+}
+
+function generarReporteHTMLDeTokens() {
+    const tokens = analizador.obtenerTablaDeTokens();
+    if (!tokens || tokens.length === 0) {
+        console.log('No se encontraron tokens o no ha analizado el archivo.');
+    } else {
+        GeneradorDeReportesHTMLTokens.generarReporteHTML('Tokens', tokens);
+    }
+    showGenerateHTMLReportsMenu();
+}
 
 
 module.exports = { welcomeMessage };
