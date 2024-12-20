@@ -126,7 +126,7 @@ Este diseño permite extender fácilmente las funcionalidades del sistema sin al
 
 ## Documentación sobre Expresión Regular y Autómata
 <img src="AUTOMATA.jpg" alt="Imagen del autómata" width="500">
-```regex
+```
 [a-zA-Z][a-zA-Z0-9]*|[0-9]+(\.[0-9]+)?|"[^"]*"|[()+\-*/{}[\]:;,.]|[\t\n\r ]|.+#
 
 ### Explicación

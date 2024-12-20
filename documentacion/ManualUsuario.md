@@ -114,3 +114,5 @@ El programa está diseñado para funcionar mediante una interfaz de línea de co
 
 ### Salida del programa  
 - Seleccione la opción 0 para salir del programa. Se mostrará un mensaje de despedida antes de cerrar la aplicación.  
+
+<img src="menu.png" alt="Imagen del autómata" width="500">
