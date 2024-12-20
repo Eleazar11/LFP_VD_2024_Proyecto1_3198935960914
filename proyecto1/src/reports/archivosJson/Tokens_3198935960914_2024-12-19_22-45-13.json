@@ -8,7 +8,7 @@
     },
     {
         "index": 2,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "operaciones",
         "fila": 2,
         "columna": 5
@@ -36,7 +36,7 @@
     },
     {
         "index": 6,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "operacion",
         "fila": 4,
         "columna": 9
@@ -50,7 +50,7 @@
     },
     {
         "index": 8,
-        "tipo": "Cadena",
+        "tipo": "Identificador",
         "valor": "suma",
         "fila": 4,
         "columna": 22
@@ -64,7 +64,7 @@
     },
     {
         "index": 10,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "valor1",
         "fila": 5,
         "columna": 9
@@ -92,7 +92,7 @@
     },
     {
         "index": 14,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "valor2",
         "fila": 6,
         "columna": 9
@@ -134,7 +134,7 @@
     },
     {
         "index": 20,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "operacion",
         "fila": 9,
         "columna": 9
@@ -148,7 +148,7 @@
     },
     {
         "index": 22,
-        "tipo": "Cadena",
+        "tipo": "Identificador",
         "valor": "resta",
         "fila": 9,
         "columna": 22
@@ -162,7 +162,7 @@
     },
     {
         "index": 24,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "valor1",
         "fila": 10,
         "columna": 9
@@ -190,7 +190,7 @@
     },
     {
         "index": 28,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "valor2",
         "fila": 11,
         "columna": 9
@@ -211,7 +211,7 @@
     },
     {
         "index": 31,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "operacion",
         "fila": 12,
         "columna": 11
@@ -225,7 +225,7 @@
     },
     {
         "index": 33,
-        "tipo": "Cadena",
+        "tipo": "Identificador",
         "valor": "potencia",
         "fila": 12,
         "columna": 24
@@ -239,7 +239,7 @@
     },
     {
         "index": 35,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "valor1",
         "fila": 13,
         "columna": 11
@@ -267,7 +267,7 @@
     },
     {
         "index": 39,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "valor2",
         "fila": 14,
         "columna": 11
@@ -316,7 +316,7 @@
     },
     {
         "index": 46,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "operacion",
         "fila": 18,
         "columna": 9
@@ -330,7 +330,7 @@
     },
     {
         "index": 48,
-        "tipo": "Cadena",
+        "tipo": "Identificador",
         "valor": "suma",
         "fila": 18,
         "columna": 22
@@ -344,7 +344,7 @@
     },
     {
         "index": 50,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "valor1",
         "fila": 19,
         "columna": 9
@@ -365,7 +365,7 @@
     },
     {
         "index": 53,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "operacion",
         "fila": 20,
         "columna": 11
@@ -379,7 +379,7 @@
     },
     {
         "index": 55,
-        "tipo": "Cadena",
+        "tipo": "Identificador",
         "valor": "seno",
         "fila": 20,
         "columna": 24
@@ -393,7 +393,7 @@
     },
     {
         "index": 57,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "valor1",
         "fila": 21,
         "columna": 11
@@ -428,7 +428,7 @@
     },
     {
         "index": 62,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "valor2",
         "fila": 23,
         "columna": 9
@@ -470,7 +470,7 @@
     },
     {
         "index": 68,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "operacion",
         "fila": 26,
         "columna": 9
@@ -484,7 +484,7 @@
     },
     {
         "index": 70,
-        "tipo": "Cadena",
+        "tipo": "Identificador",
         "valor": "multiplicacion",
         "fila": 26,
         "columna": 22
@@ -498,7 +498,7 @@
     },
     {
         "index": 72,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "valor1",
         "fila": 27,
         "columna": 9
@@ -526,7 +526,7 @@
     },
     {
         "index": 76,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "valor2",
         "fila": 28,
         "columna": 9
@@ -568,7 +568,7 @@
     },
     {
         "index": 82,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "operacion",
         "fila": 31,
         "columna": 9
@@ -582,7 +582,7 @@
     },
     {
         "index": 84,
-        "tipo": "Cadena",
+        "tipo": "Identificador",
         "valor": "division",
         "fila": 31,
         "columna": 22
@@ -596,7 +596,7 @@
     },
     {
         "index": 86,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "valor1",
         "fila": 32,
         "columna": 9
@@ -624,7 +624,7 @@
     },
     {
         "index": 90,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "valor2",
         "fila": 33,
         "columna": 9
@@ -666,7 +666,7 @@
     },
     {
         "index": 96,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "configuraciones",
         "fila": 36,
         "columna": 5
@@ -694,7 +694,7 @@
     },
     {
         "index": 100,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "fondo",
         "fila": 38,
         "columna": 9
@@ -722,7 +722,7 @@
     },
     {
         "index": 104,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "fuente",
         "fila": 39,
         "columna": 9
@@ -750,7 +750,7 @@
     },
     {
         "index": 108,
-        "tipo": "Cadena",
+        "tipo": "Palabra reservada",
         "valor": "forma",
         "fila": 40,
         "columna": 9

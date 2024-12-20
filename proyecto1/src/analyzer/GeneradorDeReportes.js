@@ -11,7 +11,7 @@ class GeneradorDeReportes {
             .toString()
             .padStart(2, '0')}-${fechaActual.getSeconds().toString().padStart(2, '0')}`;
 
-        const ruta = `./src/reports/erroresJson/${nombreArchivo}_3198935960914_${marcaDeTiempo}.json`;
+        const ruta = `./src/reports/archivosJson/${nombreArchivo}_3198935960914_${marcaDeTiempo}.json`;
         fs.writeFileSync(ruta, JSON.stringify(datos, null, 4), 'utf-8');
         console.log(`Reporte generado: ${ruta}`);
     }

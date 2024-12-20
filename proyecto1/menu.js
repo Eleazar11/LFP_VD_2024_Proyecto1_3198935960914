@@ -23,8 +23,8 @@ function showMenu() {
     console.log('Menu:');
     console.log('1. Cargar Archivo');
     console.log('2. Analizar archivo');
-    console.log('3. Generar archivo de errores');
-    console.log('4. Generar archivo de tokens');
+    console.log('3. Generar archivos json');
+    console.log('4. Generar reportes');
     console.log('0. Salir');
     rl.question('Seleccione una opción: ', (option) => {
         switch (option) {
@@ -35,10 +35,10 @@ function showMenu() {
                 analizarArchivo(); // Función para analizar el archivo
                 break;
             case '3':
-                generarArchivoDeErrores();
+                showGenerateFilesMenu(); // Redirigir al submenú
                 break;
             case '4':
-                generarReporteDeLexemasTokens();
+                console.log('opcion 4');
                 break;
             case '0':
                 console.log('Saliendo...');
@@ -51,6 +51,8 @@ function showMenu() {
     });
 }
 
+
+// Función para mostrar el submenú de FileLoader
 function showFileLoaderMenu() {
     console.log('Submenú de FileLoader:');
     console.log('1. Ingresar ruta para cargar archivo');
@@ -103,7 +105,6 @@ function showFileLoaderMenu() {
 
 
 // Función para analizar el archivo
-// Función para analizar el archivo
 function analizarArchivo() {
     if (!texto) {
         console.log('Primero debes cargar un archivo.');
@@ -124,6 +125,29 @@ function analizarArchivo() {
     showMenu();
 }
 
+// Función para mostrar el submenú de generación de archivos JSON
+function showGenerateFilesMenu() {
+    console.log('Submenú: Generar Archivos JSON');
+    console.log('1. Generar archivo de errores');
+    console.log('2. Generar archivo de tokens');
+    console.log('3. Regresar al menú principal');
+    rl.question('Seleccione una opción: ', (subOption) => {
+        switch (subOption) {
+            case '1':
+                generarArchivoDeErrores();
+                break;
+            case '2':
+                generarReporteDeLexemasTokens();
+                break;
+            case '3':
+                showMenu();
+                break;
+            default:
+                console.log('Opción no válida');
+                showGenerateFilesMenu();
+        }
+    });
+}
 
 // Generar archivo de errores
 function generarArchivoDeErrores() {
@@ -134,17 +158,19 @@ function generarArchivoDeErrores() {
         GeneradorDeReportes.generarReporteJSON('Errores', errores);
         console.log('Archivo de errores generado exitosamente.');
     }
-    showMenu();
+    showGenerateFilesMenu();
 }
 
 // Generar reporte de lexemas y tokens
 function generarReporteDeLexemasTokens() {
-    //const lexemas = analizador.obtenerTablaDeLexemas();
     const tokens = analizador.obtenerTablaDeTokens();
-    //GeneradorDeReportes.generarReporteJSON('Lexemas', lexemas);
-    GeneradorDeReportes.generarReporteJSON('Tokens', tokens);
-    console.log('Archivo json de tokens generado exitosamente.');
-    showMenu();
+    if (!tokens || tokens.length === 0) {
+        console.log('No se encontraron tokens o no ha analizado el archivo.');
+    } else {
+        GeneradorDeReportes.generarReporteJSON('Tokens', tokens);
+        console.log('Archivo json de tokens generado exitosamente.');
+    }
+    showGenerateFilesMenu();
 }
 
 
