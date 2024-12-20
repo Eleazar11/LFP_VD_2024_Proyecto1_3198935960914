@@ -6,6 +6,7 @@ const GeneradorDeReportesHTMLErrores = require('./src/analyzer/GeneradorDeReport
 const GeneradorDeReportesHTMLTokens = require('./src/analyzer/GeneradorDeReportesHTMLTokens');
 const OperacionesParser = require('./src/operations/OperacionesParser');
 
+
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
@@ -223,6 +224,7 @@ function generarReporteHTMLDeTokens() {
     }
     showGenerateHTMLReportsMenu();
 }
+
 function analizarOperaciones() {
     if (!texto) {
         console.log('Primero debes cargar un archivo.');
