@@ -125,6 +125,7 @@ Este diseño permite extender fácilmente las funcionalidades del sistema sin al
 ---
 
 ## Documentación sobre Expresión Regular y Autómata
+<img src="AUTOMATA.jpg" alt="Imagen del autómata" width="500">
 ```regex
 [a-zA-Z][a-zA-Z0-9]*|[0-9]+(\.[0-9]+)?|"[^"]*"|[()+\-*/{}[\]:;,.]|[\t\n\r ]|.+#
 
@@ -185,3 +186,6 @@ Este diseño permite extender fácilmente las funcionalidades del sistema sin al
 | **S5**        | N/A                         | **Sf**           | Aceptar símbolo individual.                   |
 | **S6**        | N/A                         | **Sf**           | Generar error léxico.                         |
 | **Sf**        | N/A                         | **S0**           | Reiniciar para analizar el siguiente token.   |
+
+
+<img src="AUTOMATA.jpg" alt="Imagen del autómata" width="500">
