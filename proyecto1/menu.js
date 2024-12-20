@@ -5,6 +5,7 @@ const GeneradorDeReportes = require('./src/analyzer/GeneradorDeReportes'); // Im
 const GeneradorDeReportesHTMLErrores = require('./src/analyzer/GeneradorDeReportesHTMLErrores');
 const GeneradorDeReportesHTMLTokens = require('./src/analyzer/GeneradorDeReportesHTMLTokens');
 const OperacionesParser = require('./src/operations/OperacionesParser');
+const GraphGenerator = require('./src/operations/GraphGenerator');
 
 
 const rl = readline.createInterface({
@@ -30,6 +31,7 @@ function showMenu() {
     console.log('3. Generar archivos json');
     console.log('4. Generar reportes HTML');
     console.log('5. Analizar operaciones');
+    console.log('6. Generar grafo');
     console.log('0. Salir');
     rl.question('Seleccione una opción: ', (option) => {
         switch (option) {
@@ -47,6 +49,9 @@ function showMenu() {
                 break;
             case '5':
                 analizarOperaciones();
+                break;
+            case '6': 
+                generarGrafo();
                 break;
             case '0':
                 console.log('Saliendo...');
@@ -239,6 +244,30 @@ function analizarOperaciones() {
     showMenu();
 }
 
+function generarGrafo() {
+    if (!texto || texto.trim() === "") {
+        console.log("No se ha cargado ningún archivo.");
+        showMenu();
+        return;
+    }
+
+    try {
+        const jsonData = JSON.parse(texto); // Convertimos el contenido en un JSON válido
+        const graphGenerator = new GraphGenerator(jsonData);
+
+        // Generar el grafo
+        graphGenerator.generarGrafo();
+
+        // Guardar y generar la imagen
+        graphGenerator.generarImagen("grafo_operaciones");
+
+        console.log("Proceso de generación de grafo completado.");
+    } catch (error) {
+        console.error("Error al analizar las operaciones o generar el grafo:", error.message);
+    }
+
+    showMenu(); // Volver al menú principal
+}
 
 
 module.exports = { welcomeMessage };
