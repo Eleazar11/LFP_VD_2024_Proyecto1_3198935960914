@@ -8,7 +8,8 @@ class AnalizadorLexico {
             'bool', 'true', 'false', 'void', 'return', 'break', 'continue',
             'function', 'let', 'const', 'operaciones', 'operacion', 'valor1', 'valor2',
             'configuraciones', 'fondo', 'fuente', 'forma', 'ConfiguracionesLex', 'ConfiguracionesParser',
-            'tipoFuente', 'Operaciones',
+            'tipoFuente', 'Operaciones', 'imprimir', 'conteo', 'promedio', 'max', 'min', 'generarReporte',
+            'tokens', 'errores', 'arbol', 
         ];
 
         this.identificadoresValidos = [
