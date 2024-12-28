@@ -9,7 +9,7 @@ class AnalizadorLexico {
             'function', 'let', 'const', 'operaciones', 'operacion', 'valor1', 'valor2',
             'configuraciones', 'fondo', 'fuente', 'forma', 'ConfiguracionesLex', 'ConfiguracionesParser',
             'tipoFuente', 'Operaciones', 'imprimir', 'conteo', 'promedio', 'max', 'min', 'generarReporte',
-            'tokens', 'errores', 'arbol', 
+            'tokens', 'errores', 'arbol',
         ];
 
         this.identificadoresValidos = [
@@ -179,22 +179,33 @@ class AnalizadorLexico {
                     } else {
                         agregarLexema('Comentario de línea');
                         estado = 0;
+                        if (char === '\n') {
+                            avanzarPosicion(char);
+                        }
                     }
                     break;
-
+                //C:\Users\eleaz\Desktop\entrada.nlex
                 case 7: // Comentario de múltiples líneas
-                    if (char === '*' && texto[contador + 1] === '/') {
-                        lexemaActual += char + '/';
-                        contador++; // Avanzar para incluir '/'
-                        agregarLexema('Comentario de múltiples líneas');
-                        estado = 0;
-                    } else if (char === '\0') {
-                        agregarError('Comentario de múltiples líneas no cerrado');
-                        estado = 0;
-                    } else {
-                        lexemaActual += char;
-                    }
-                    break;
+    if (char === '*' && texto[contador + 1] === '/') {
+        lexemaActual += char + '/';
+        contador++; // Avanzar para incluir '/'
+        agregarLexema('Comentario de múltiples líneas');
+        estado = 0;
+    } else if (char === '\0') {
+        agregarError('Comentario de múltiples líneas no cerrado');
+        estado = 0;
+    } else {
+        lexemaActual += char;  // Acumular el contenido del comentario
+        if (char === '\n') {
+            // No incrementamos la fila aún dentro del comentario
+            this.columna = 1; // Reiniciar la columna al encontrar un salto de línea
+        } else if (char !== '\r') { 
+            this.columna++; // Avanzar la columna normalmente
+        }
+    }
+    break;
+
+
 
                 default:
                     agregarError('Estado desconocido');
