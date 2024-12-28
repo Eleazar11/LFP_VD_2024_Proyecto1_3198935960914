@@ -1,134 +1,65 @@
 const express = require('express');
-const FileLoader = require('./src/loaders/FileLoader');
+const bodyParser = require('body-parser');
+const fs = require('fs');
+const path = require('path');
 const AnalizadorLexico = require('./src/analyzer/AnalizadorLexico');
-const GeneradorDeReportes = require('./src/analyzer/GeneradorDeReportes');
-const GeneradorDeReportesHTMLErrores = require('./src/analyzer/GeneradorDeReportesHTMLErrores');
-const GeneradorDeReportesHTMLTokens = require('./src/analyzer/GeneradorDeReportesHTMLTokens');
-const OperacionesParser = require('./src/operations/OperacionesParser');
-const GraphGenerator = require('./src/operations/GraphGenerator');
+const FileLoader = require('./src/loaders/FileLoader');
 
 const app = express();
 const port = 3000;
 
-// Middlewares
-app.use(express.json()); // Para manejar JSON en las peticiones
+// Middleware para parsear el cuerpo de las solicitudes
+app.use(bodyParser.text());  // Esto asegura que el cuerpo de las solicitudes sea tratado como texto plano
 
-// Instancias
-const fileLoader = new FileLoader();
+// Instanciamos el analizador léxico y el cargador de archivos
 const analizador = new AnalizadorLexico();
-let texto = ''; // Variable global para almacenar el contenido del archivo
+const fileLoader = new FileLoader();
 
-// Rutas
-// Ruta para cargar un archivo
-app.post('/loadFile', async (req, res) => {
-    const { filePath } = req.body;
-    try {
-        fileLoader.clearFileContents();
-        fileLoader.setFilePath(filePath);
-        texto = await fileLoader.readFile();
-        res.status(200).json({ message: 'Archivo cargado con éxito', contenido: texto });
-    } catch (error) {
-        res.status(500).json({ message: 'Error al cargar el archivo', error: error.message });
+// Variable global para almacenar el contenido del archivo
+let texto = '';
+/*
+*/
+// Ruta para cargar el archivo
+app.post('/loadFile', (req, res) => {
+    const filePath = req.body.trim(); // Recibimos la ruta como texto plano
+    if (!filePath) {
+        return res.status(400).json({ message: 'La ruta del archivo es necesaria' });
     }
+
+    // Intentamos leer el archivo
+    fs.readFile(filePath, 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).json({ message: 'Error al leer el archivo', error: err.message });
+        }
+        texto = data;  // Almacenamos el contenido del archivo
+        console.log('Archivo cargado con éxito');
+        res.status(200).json({ message: 'Archivo cargado con éxito', contenido: data });
+    });
 });
 
-// Ruta para analizar el archivo cargado
-app.get('/analyzeFile', (req, res) => {
+// Ruta para analizar el archivo
+app.post('/analyzeFile', (req, res) => {
     if (!texto) {
         return res.status(400).json({ message: 'Primero debes cargar un archivo' });
     }
-    analizador.reset();
+
+    // Analizamos el archivo
+    analizador.reset(); // Limpiar cualquier análisis anterior
     analizador.analizarTexto(texto);
 
+    // Obtenemos los lexemas y errores
     const lexemas = analizador.obtenerTablaDeLexemas();
     const errores = analizador.errores;
 
-    res.status(200).json({ lexemas, errores });
+    // Respondemos con los resultados del análisis
+    res.status(200).json({
+        message: 'Análisis completado',
+        lexemas: lexemas,
+        errores: errores
+    });
 });
 
-// Ruta para generar archivos JSON
-app.post('/generateJson', (req, res) => {
-    const { type } = req.body;
-
-    if (type === 'tokens') {
-        const tokens = analizador.obtenerTablaDeTokens();
-        if (!tokens || tokens.length === 0) {
-            return res.status(400).json({ message: 'No se encontraron tokens' });
-        }
-        GeneradorDeReportes.generarReporteJSON('Tokens', tokens);
-        return res.status(200).json({ message: 'Archivo JSON de tokens generado exitosamente' });
-    }
-
-    if (type === 'errors') {
-        const errores = analizador.errores;
-        if (errores.length === 0) {
-            return res.status(400).json({ message: 'No se encontraron errores' });
-        }
-        GeneradorDeReportes.generarReporteJSON('Errores', errores);
-        return res.status(200).json({ message: 'Archivo JSON de errores generado exitosamente' });
-    }
-
-    res.status(400).json({ message: 'Tipo no válido' });
-});
-
-// Ruta para generar reportes HTML
-app.post('/generateHtml', (req, res) => {
-    const { type } = req.body;
-
-    if (type === 'tokens') {
-        const tokens = analizador.obtenerTablaDeTokens();
-        if (!tokens || tokens.length === 0) {
-            return res.status(400).json({ message: 'No se encontraron tokens' });
-        }
-        GeneradorDeReportesHTMLTokens.generarReporteHTML('Tokens', tokens);
-        return res.status(200).json({ message: 'Reporte HTML de tokens generado exitosamente' });
-    }
-
-    if (type === 'errors') {
-        const errores = analizador.errores;
-        if (errores.length === 0) {
-            return res.status(400).json({ message: 'No se encontraron errores' });
-        }
-        GeneradorDeReportesHTMLErrores.generarReporteHTML('Errores', errores);
-        return res.status(200).json({ message: 'Reporte HTML de errores generado exitosamente' });
-    }
-
-    res.status(400).json({ message: 'Tipo no válido' });
-});
-
-// Ruta para analizar operaciones
-app.post('/analyzeOperations', (req, res) => {
-    if (!texto) {
-        return res.status(400).json({ message: 'Primero debes cargar un archivo' });
-    }
-
-    try {
-        const parser = new OperacionesParser(texto);
-        const operaciones = parser.parsearOperaciones();
-        res.status(200).json({ message: 'Operaciones analizadas con éxito', operaciones });
-    } catch (error) {
-        res.status(500).json({ message: 'Error al analizar operaciones', error: error.message });
-    }
-});
-
-// Ruta para generar grafo
-app.post('/generateGraph', (req, res) => {
-    if (!texto) {
-        return res.status(400).json({ message: 'Primero debes cargar un archivo' });
-    }
-
-    try {
-        const jsonData = JSON.parse(texto);
-        const graphGenerator = new GraphGenerator(jsonData);
-        graphGenerator.generarGrafo();
-        graphGenerator.generarImagen('grafo_operaciones');
-        res.status(200).json({ message: 'Grafo generado con éxito' });
-    } catch (error) {
-        res.status(500).json({ message: 'Error al generar el grafo', error: error.message });
-    }
-});
-
-// Iniciar el servidor
+// Iniciamos el servidor
 app.listen(port, () => {
     console.log(`Servidor corriendo en http://localhost:${port}`);
 });
