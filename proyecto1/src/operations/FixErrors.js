@@ -1,3 +1,4 @@
+//clase para limpiar el doc de errores pero no se usa
 class FixErrors {
     constructor(texto) {
         this.texto = texto;

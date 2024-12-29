@@ -239,7 +239,14 @@ function analizarOperaciones() {
 
     console.log('Procesando operaciones del archivo...');
     const parser = new OperacionesParser(texto);
-    parser.parsearOperaciones();
+    const contenidoSinCorchetes = parser.parsearOperaciones();
+
+    if (contenidoSinCorchetes) {
+        console.log('Operaciones extraídas (sin corchetes):');
+        console.log(contenidoSinCorchetes);
+    } else {
+        console.log('No se pudieron procesar las operaciones.');
+    }
 
     showMenu();
 }

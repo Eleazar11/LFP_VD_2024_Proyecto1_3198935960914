@@ -1,107 +1,61 @@
 class OperacionesParser {
     constructor(texto) {
         this.texto = texto;
-        this.resultados = [];
+    }
+
+    // Simplificar operaciones anidadas en valor1 y valor2
+    simplificarValores(valor) {
+        if (Array.isArray(valor) && valor.length === 1) {
+            valor = valor[0]; // Desenvuelve si es un array de un solo elemento
+        }
+
+        if (typeof valor === 'object' && valor !== null) {
+            if (valor.valor1) {
+                valor.valor1 = this.simplificarValores(valor.valor1);
+            }
+            if (valor.valor2) {
+                valor.valor2 = this.simplificarValores(valor.valor2);
+            }
+        }
+
+        return valor;
     }
 
     parsearOperaciones() {
-        let jsonData;
+        // Paso 1: Eliminar comentarios
+        let textoSinComentarios = this.texto
+            .replace(/\/\/[^\n]*\n/g, '') // Elimina comentarios de una línea
+            .replace(/\/\*[\s\S]*?\*\//g, ''); // Elimina comentarios multilínea
 
-        try {
-            // Intenta parsear el JSON
-            jsonData = JSON.parse(this.texto);
-        } catch (error) {
-            console.error('Error al parsear el archivo JSON:', error.message);
-            return;
-        }
+        // Paso 2: Extraer el bloque de operaciones
+        const operacionesMatch = textoSinComentarios.match(/Operaciones\s*=\s*\[([\s\S]*?)\]/);
 
-        if (!jsonData.operaciones || !Array.isArray(jsonData.operaciones)) {
+        if (!operacionesMatch) {
             console.error('No se encontraron operaciones válidas en el archivo.');
-            return;
+            return null;
         }
 
-        // Procesar cada operación
-        jsonData.operaciones.forEach((operacion, index) => {
-            try {
-                const resultado = this.evaluarOperacion(operacion);
-                this.resultados.push({ index, resultado });
-            } catch (error) {
-                console.error(`Error al procesar la operación en el índice ${index}:`, error.message);
-            }
-        });
+        // Paso 3: Obtener el contenido interno
+        let operacionesContenido = operacionesMatch[1].trim();
 
-        console.log('Resultados de las operaciones:');
-        this.resultados.forEach(({ index, resultado }) =>
-            console.log(`Operación ${index + 1}: ${resultado}`)
-        );
-    }
+        // Simplificar valores en las operaciones
+        try {
+            let jsonOperaciones = JSON.parse(`[${operacionesContenido}]`); // Parsear como array de JSON
+            jsonOperaciones = jsonOperaciones.map(this.simplificarValores.bind(this)); // Simplificar valores
 
-    evaluarOperacion(operacion) {
-        if (!operacion.operacion) {
-            throw new Error('Falta el tipo de operación.');
+            // Convertir de nuevo a texto, separando cada operación con una coma
+            const contenidoSinCorchetes = jsonOperaciones
+                .map((operacion) => JSON.stringify(operacion))
+                .join(',\n');
+
+            console.log('Contenido de operaciones sin corchetes:');
+            console.log(contenidoSinCorchetes);
+
+            return contenidoSinCorchetes;
+        } catch (error) {
+            console.error('Error al procesar el bloque de operaciones:', error.message);
+            return null;
         }
-
-        // Obtener valores procesados para valor1 y valor2 (resuelve operaciones anidadas)
-        const valor1 = operacion.valor1 !== undefined ? this.obtenerValor(operacion.valor1) : null;
-        const valor2 = operacion.valor2 !== undefined ? this.obtenerValor(operacion.valor2) : null;
-
-        // Realizar la operación principal
-        switch (operacion.operacion.toLowerCase()) {
-            case 'suma':
-                return (valor1 || 0) + (valor2 || 0);
-            case 'resta':
-                return (valor1 || 0) - (valor2 || 0);
-            case 'multiplicacion':
-                return (valor1 || 1) * (valor2 || 1);
-            case 'division':
-                if (valor2 === 0) throw new Error('División por cero.');
-                return (valor1 || 0) / (valor2 || 1);
-            case 'potencia':
-                return Math.pow(valor1 || 1, valor2 || 1);
-            case 'seno':
-                if (valor2 !== null) {
-                    console.warn('La operación seno solo utiliza valor1. Ignorando valor2.');
-                }
-                return Math.sin((valor1 * Math.PI) / 180); // Asume ángulos en grados
-            case 'raiz':
-                if (valor1 < 0) throw new Error('No se puede calcular la raíz cuadrada de un número negativo.');
-                return Math.sqrt(valor1 || 0);
-            case 'inverso':
-                if (valor1 === 0) throw new Error('El inverso de cero no está definido.');
-                return 1 / (valor1 || 1);
-            case 'coseno':
-                if (valor2 !== null) {
-                    console.warn('La operación coseno solo utiliza valor1. Ignorando valor2.');
-                }
-                return Math.cos((valor1 * Math.PI) / 180); // Asume ángulos en grados
-            case 'tangente':
-                if (valor2 !== null) {
-                    console.warn('La operación tangente solo utiliza valor1. Ignorando valor2.');
-                }
-                return Math.tan((valor1 * Math.PI) / 180); // Asume ángulos en grados
-            case 'mod':
-                return (valor1 || 0) % (valor2 || 1);
-            default:
-                throw new Error(`Operación desconocida: ${operacion.operacion}`);
-        }
-    }
-
-    obtenerValor(valor) {
-        if (typeof valor === 'number') {
-            return valor;
-        }
-
-        if (Array.isArray(valor)) {
-            // Si el valor es un arreglo, puede tener operaciones anidadas
-            return this.evaluarOperacion(valor[0]); // Procesa el primer elemento del arreglo
-        }
-
-        if (typeof valor === 'object') {
-            // Si el valor es un objeto, puede ser una operación anidada
-            return this.evaluarOperacion(valor);
-        }
-
-        throw new Error('Valor inválido en la operación.');
     }
 }
 
