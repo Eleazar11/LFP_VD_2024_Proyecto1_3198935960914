@@ -32,7 +32,16 @@ class OperacionesParser {
         console.log('Contenido de operaciones sin corchetes:');
         console.log(operacionesContenido);
 
-        return operacionesContenido;
+        // Paso 5: Reconstruir el JSON válido
+        try {
+            const jsonValido = JSON.parse(`[${operacionesContenido}]`);
+            console.log('Contenido transformado a JSON:');
+            console.log(JSON.stringify(jsonValido, null, 2));
+            return jsonValido;
+        } catch (error) {
+            console.error('Error al transformar el contenido a JSON:', error.message);
+            return null;
+        }
     }
 }
 

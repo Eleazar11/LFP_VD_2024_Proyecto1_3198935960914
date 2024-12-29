@@ -230,6 +230,7 @@ function generarReporteHTMLDeTokens() {
     showGenerateHTMLReportsMenu();
 }
 
+// Función para analizar las operaciones del archivo
 function analizarOperaciones() {
     if (!texto) {
         console.log('Primero debes cargar un archivo.');
@@ -243,18 +244,15 @@ function analizarOperaciones() {
     const contenidoSinCorchetes = parser.parsearOperaciones();
 
     if (contenidoSinCorchetes) {
-        console.log('Operaciones extraídas (sin corchetes):');
-        console.log(contenidoSinCorchetes);
-
-        // Guardar en archivo para verificar contenido completo (opcional)
-        const fs = require('fs');
-        fs.writeFileSync('salida.txt', contenidoSinCorchetes, 'utf8');
+        console.log('Operaciones extraídas:');
+        console.log(JSON.stringify(contenidoSinCorchetes, null, 2)); // Muestra el JSON en consola con formato
     } else {
         console.log('No se pudieron procesar las operaciones.');
     }
 
     showMenu();
 }
+
 
 function generarGrafo() {
     if (!texto || texto.trim() === "") {
