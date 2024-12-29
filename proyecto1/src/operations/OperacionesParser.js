@@ -9,21 +9,26 @@ class OperacionesParser {
             .replace(/\/\/[^\n]*\n/g, '') // Elimina comentarios de una línea
             .replace(/\/\*[\s\S]*?\*\//g, ''); // Elimina comentarios multilínea
 
-        // Paso 2: Extraer el bloque de operaciones
-        const operacionesMatch = textoSinComentarios.match(/Operaciones\s*=\s*\[([\s\S]*?)\]/);
+        console.log('Texto sin comentarios:', textoSinComentarios.length, 'caracteres.');
 
-        if (!operacionesMatch) {
+        // Paso 2: Buscar la posición inicial del bloque 'Operaciones = [' y su cierre ']'
+        const inicio = textoSinComentarios.indexOf('Operaciones = [');
+        const fin = textoSinComentarios.lastIndexOf(']');
+
+        if (inicio === -1 || fin === -1) {
             console.error('No se encontraron operaciones válidas en el archivo.');
             return null;
         }
 
-        // Paso 3: Obtener el contenido interno
-        let operacionesContenido = operacionesMatch[1].trim();
+        // Paso 3: Extraer el bloque completo de operaciones
+        const bloqueOperaciones = textoSinComentarios.slice(inicio + 'Operaciones = ['.length, fin).trim();
 
-        // Paso 4: Eliminar todos los corchetes de apertura '[' y cierre ']'
-        operacionesContenido = operacionesContenido.replace(/\[|\]/g, '').trim();
+        console.log('Bloque extraído (con corchetes internos):');
+        console.log(bloqueOperaciones);
 
-        // Mostrar el contenido sin corchetes
+        // Paso 4: Eliminar corchetes externos si existen
+        const operacionesContenido = bloqueOperaciones.replace(/\[|\]/g, '').trim();
+
         console.log('Contenido de operaciones sin corchetes:');
         console.log(operacionesContenido);
 

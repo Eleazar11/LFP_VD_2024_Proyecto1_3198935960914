@@ -239,19 +239,22 @@ function analizarOperaciones() {
 
     console.log('Procesando operaciones del archivo...');
     const parser = new OperacionesParser(texto);
+
     const contenidoSinCorchetes = parser.parsearOperaciones();
 
     if (contenidoSinCorchetes) {
         console.log('Operaciones extraídas (sin corchetes):');
         console.log(contenidoSinCorchetes);
+
+        // Guardar en archivo para verificar contenido completo (opcional)
+        const fs = require('fs');
+        fs.writeFileSync('salida.txt', contenidoSinCorchetes, 'utf8');
     } else {
         console.log('No se pudieron procesar las operaciones.');
     }
 
     showMenu();
 }
-
-
 
 function generarGrafo() {
     if (!texto || texto.trim() === "") {
