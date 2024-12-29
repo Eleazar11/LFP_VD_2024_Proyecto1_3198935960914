@@ -4,7 +4,7 @@ class OperacionesParser {
     }
 
     parsearOperaciones() {
-        // Paso 1: Eliminar comentarios
+        // Paso 1: Eliminar comentarios (en caso de haberlos)
         let textoSinComentarios = this.texto
             .replace(/\/\/[^\n]*\n/g, '') // Elimina comentarios de una línea
             .replace(/\/\*[\s\S]*?\*\//g, ''); // Elimina comentarios multilínea
@@ -17,8 +17,11 @@ class OperacionesParser {
             return null;
         }
 
-        // Paso 3: Obtener el contenido interno y eliminar los corchetes
+        // Paso 3: Obtener el contenido interno
         let operacionesContenido = operacionesMatch[1].trim();
+
+        // Paso 4: Eliminar todos los corchetes de apertura '[' y cierre ']'
+        operacionesContenido = operacionesContenido.replace(/\[|\]/g, '').trim();
 
         // Mostrar el contenido sin corchetes
         console.log('Contenido de operaciones sin corchetes:');
