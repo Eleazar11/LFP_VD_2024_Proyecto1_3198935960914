@@ -3,24 +3,6 @@ class OperacionesParser {
         this.texto = texto;
     }
 
-    // Simplificar operaciones anidadas en valor1 y valor2
-    simplificarValores(valor) {
-        if (Array.isArray(valor) && valor.length === 1) {
-            valor = valor[0]; // Desenvuelve si es un array de un solo elemento
-        }
-
-        if (typeof valor === 'object' && valor !== null) {
-            if (valor.valor1) {
-                valor.valor1 = this.simplificarValores(valor.valor1);
-            }
-            if (valor.valor2) {
-                valor.valor2 = this.simplificarValores(valor.valor2);
-            }
-        }
-
-        return valor;
-    }
-
     parsearOperaciones() {
         // Paso 1: Eliminar comentarios
         let textoSinComentarios = this.texto
@@ -35,27 +17,14 @@ class OperacionesParser {
             return null;
         }
 
-        // Paso 3: Obtener el contenido interno
+        // Paso 3: Obtener el contenido interno y eliminar los corchetes
         let operacionesContenido = operacionesMatch[1].trim();
 
-        // Simplificar valores en las operaciones
-        try {
-            let jsonOperaciones = JSON.parse(`[${operacionesContenido}]`); // Parsear como array de JSON
-            jsonOperaciones = jsonOperaciones.map(this.simplificarValores.bind(this)); // Simplificar valores
+        // Mostrar el contenido sin corchetes
+        console.log('Contenido de operaciones sin corchetes:');
+        console.log(operacionesContenido);
 
-            // Convertir de nuevo a texto, separando cada operación con una coma
-            const contenidoSinCorchetes = jsonOperaciones
-                .map((operacion) => JSON.stringify(operacion))
-                .join(',\n');
-
-            console.log('Contenido de operaciones sin corchetes:');
-            console.log(contenidoSinCorchetes);
-
-            return contenidoSinCorchetes;
-        } catch (error) {
-            console.error('Error al procesar el bloque de operaciones:', error.message);
-            return null;
-        }
+        return operacionesContenido;
     }
 }
 

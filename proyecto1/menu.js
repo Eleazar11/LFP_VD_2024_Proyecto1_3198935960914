@@ -251,6 +251,8 @@ function analizarOperaciones() {
     showMenu();
 }
 
+
+
 function generarGrafo() {
     if (!texto || texto.trim() === "") {
         console.log("No se ha cargado ningún archivo.");
