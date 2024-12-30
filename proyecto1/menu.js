@@ -6,6 +6,7 @@ const GeneradorDeReportesHTMLErrores = require('./src/analyzer/GeneradorDeReport
 const GeneradorDeReportesHTMLTokens = require('./src/analyzer/GeneradorDeReportesHTMLTokens');
 const OperacionesParser = require('./src/operations/OperacionesParser');
 const GraphGenerator = require('./src/operations/GraphGenerator');
+const FiltroOperaciones = require('./src/operations/FiltroOperaciones');
 
 
 const rl = readline.createInterface({
