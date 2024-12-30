@@ -241,11 +241,18 @@ function analizarOperaciones() {
     console.log('Procesando operaciones del archivo...');
     const parser = new OperacionesParser(texto);
 
-    const contenidoSinCorchetes = parser.parsearOperaciones();
+    const operaciones = parser.parsearOperaciones();
 
-    if (contenidoSinCorchetes) {
+    if (operaciones) {
         console.log('Operaciones extraídas:');
-        console.log(JSON.stringify(contenidoSinCorchetes, null, 2)); // Muestra el JSON en consola con formato
+        console.log(JSON.stringify(operaciones, null, 2)); // Muestra el JSON en consola con formato
+
+        // Procesar las operaciones
+        const resultados = parser.procesarOperaciones(operaciones);
+        console.log('Resultados de las operaciones:');
+        resultados.forEach((resultado, index) => {
+            console.log(`${index + 1}.- ${resultado}`);
+        });
     } else {
         console.log('No se pudieron procesar las operaciones.');
     }
