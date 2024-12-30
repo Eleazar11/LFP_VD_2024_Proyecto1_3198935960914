@@ -335,8 +335,8 @@ function filtrarYRealizarOperaciones() {
         const operaciones = parser.parsearOperaciones();
 
         if (operaciones) {
-            console.log('Operaciones extraídas:');
-            console.log(JSON.stringify(operaciones, null, 2)); // Muestra el JSON en consola con formato
+        //    console.log('Operaciones extraídas:');
+          //  console.log(JSON.stringify(operaciones, null, 2)); // Muestra el JSON en consola con formato
 
             // Procesar las operaciones
             const resultados = parser.procesarOperaciones(operaciones);

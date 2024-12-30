@@ -5,13 +5,13 @@ class OperacionesParser {
 
     parsearOperaciones() {
         //mostrar en cosola el contenido de texto como viene por defecto
-        console.log('Texto original:', this.texto, 'caracteres.');
+        //console.log('Texto original:', this.texto, 'caracteres.');
         // Paso 1: Eliminar comentarios (en caso de haberlos)
         let textoSinComentarios = this.texto
             .replace(/\/\/[^\n]*\n/g, '') // Elimina comentarios de una línea
             .replace(/\/\*[\s\S]*?\*\//g, ''); // Elimina comentarios multilínea
 
-        console.log('Texto sin comentarios:', textoSinComentarios.length, 'caracteres.');
+        //console.log('Texto sin comentarios:', textoSinComentarios.length, 'caracteres.');
 
         // Paso 2: Buscar la posición inicial del bloque 'Operaciones = [' y su cierre ']'
         const inicio = textoSinComentarios.indexOf('Operaciones = [');
@@ -25,14 +25,14 @@ class OperacionesParser {
         // Paso 3: Extraer el bloque completo de operaciones
         const bloqueOperaciones = textoSinComentarios.slice(inicio + 'Operaciones = ['.length, fin).trim();
 
-        console.log('Bloque extraído (con corchetes internos):');
-        console.log(bloqueOperaciones);
+        //console.log('Bloque extraído (con corchetes internos):');
+        //console.log(bloqueOperaciones);
 
         // Paso 4: Reconstruir el JSON válido
         try {
             const jsonValido = JSON.parse(`[${bloqueOperaciones}]`);
-            console.log('Contenido transformado a JSON:');
-            console.log(JSON.stringify(jsonValido, null, 2));
+            //console.log('Contenido transformado a JSON:');
+            //console.log(JSON.stringify(jsonValido, null, 2));
             return jsonValido;
         } catch (error) {
             console.error('Error al transformar el contenido a JSON:', error.message);
