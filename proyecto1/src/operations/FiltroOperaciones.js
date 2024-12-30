@@ -12,7 +12,7 @@ class FiltroOperaciones {
 
         // Retornar el bloque completo de Operaciones si existe
         if (operacionesMatch) {
-            return `Operaciones = ${operacionesMatch}`;
+            return operacionesMatch;  // Ya no agregamos "Operaciones = " aquí
         } else {
             return null;  // Si no encuentra el bloque de operaciones, retorna null
         }

@@ -50,7 +50,8 @@ function showMenu() {
                 showGenerateHTMLReportsMenu(); // Redirigir al submenú de reportes HTML
                 break;
             case '5':
-                analizarOperaciones();
+                //analizarOperaciones();
+                filtrarYRealizarOperaciones();
                 break;
             case '6': 
                 generarGrafo();
@@ -235,37 +236,6 @@ function generarReporteHTMLDeTokens() {
     showGenerateHTMLReportsMenu();
 }
 
-// Función para analizar las operaciones del archivo
-function analizarOperaciones() {
-    if (!texto) {
-        console.log('Primero debes cargar un archivo.');
-        showMenu();
-        return;
-    }
-
-    console.log('Procesando operaciones del archivo...');
-    const parser = new OperacionesParser(texto);
-
-    const operaciones = parser.parsearOperaciones();
-
-    if (operaciones) {
-        console.log('Operaciones extraídas:');
-        console.log(JSON.stringify(operaciones, null, 2)); // Muestra el JSON en consola con formato
-
-        // Procesar las operaciones
-        const resultados = parser.procesarOperaciones(operaciones);
-        console.log('Resultados de las operaciones:');
-        resultados.forEach((resultado, index) => {
-            console.log(`${index + 1}.- ${resultado}`);
-        });
-    } else {
-        console.log('No se pudieron procesar las operaciones.');
-    }
-
-    showMenu();
-}
-
-
 function generarGrafo() {
     if (!texto || texto.trim() === "") {
         console.log("No se ha cargado ningún archivo.");
@@ -312,5 +282,76 @@ function mostrarOperacionesFiltradas() {
     showMenu();  // Mostrar el menú
 }
 
+// Función para analizar las operaciones del archivo
+function analizarOperaciones() {
+    if (!texto) {
+        console.log('Primero debes cargar un archivo.');
+        showMenu();
+        return;
+    }
+
+    console.log('Procesando operaciones del archivo...');
+    const parser = new OperacionesParser(texto);
+
+    const operaciones = parser.parsearOperaciones();
+
+    if (operaciones) {
+        console.log('Operaciones extraídas:');
+        console.log(JSON.stringify(operaciones, null, 2)); // Muestra el JSON en consola con formato
+
+        // Procesar las operaciones
+        const resultados = parser.procesarOperaciones(operaciones);
+        console.log('Resultados de las operaciones:');
+        resultados.forEach((resultado, index) => {
+            console.log(`${index + 1}.- ${resultado}`);
+        });
+    } else {
+        console.log('No se pudieron procesar las operaciones.');
+    }
+
+    showMenu();
+}
+
+function filtrarYRealizarOperaciones() {
+    if (!texto) {
+        console.log('Primero debes cargar un archivo.');
+        showMenu();
+        return;
+    }
+
+    // Paso 1: Filtrar las operaciones
+    console.log('Filtrando texto...');
+    const filtro = new FiltroOperaciones(texto);  // Instancia la clase FiltroOperaciones
+    const textoFiltrado = filtro.filtrarTexto();
+
+    if (textoFiltrado) {
+        console.log('Operaciones filtradas:');
+        console.log(textoFiltrado);  // Muestra todo el bloque de 'Operaciones = [...]' tal cual está en el texto
+
+        // Paso 2: Procesar las operaciones
+        console.log('Procesando operaciones del archivo...');
+        const parser = new OperacionesParser(textoFiltrado);  // Instancia la clase OperacionesParser
+
+        const operaciones = parser.parsearOperaciones();
+
+        if (operaciones) {
+            console.log('Operaciones extraídas:');
+            console.log(JSON.stringify(operaciones, null, 2)); // Muestra el JSON en consola con formato
+
+            // Procesar las operaciones
+            const resultados = parser.procesarOperaciones(operaciones);
+            console.log('Resultados de las operaciones:');
+            resultados.forEach((resultado, index) => {
+                console.log(`${index + 1}.- ${resultado}`);
+            });
+        } else {
+            console.log('No se pudieron procesar las operaciones.');
+        }
+    } else {
+        console.log('No se pudo encontrar el bloque de operaciones.');
+    }
+
+    showMenu();  // Mostrar el menú
+}
 
 module.exports = { welcomeMessage };
