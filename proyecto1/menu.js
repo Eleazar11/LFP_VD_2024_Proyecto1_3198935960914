@@ -312,4 +312,5 @@ function mostrarOperacionesFiltradas() {
     showMenu();  // Mostrar el menú
 }
 
+
 module.exports = { welcomeMessage };

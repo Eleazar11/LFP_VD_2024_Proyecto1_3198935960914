@@ -12,7 +12,7 @@ class FiltroOperaciones {
 
         // Retornar el bloque completo de Operaciones si existe
         if (operacionesMatch) {
-            return operacionesMatch;
+            return `Operaciones = ${operacionesMatch}`;
         } else {
             return null;  // Si no encuentra el bloque de operaciones, retorna null
         }
@@ -29,6 +29,7 @@ class FiltroOperaciones {
             if (texto.slice(i, i + 15) === "Operaciones = [") {
                 encontrado = true;
                 i += 15;  // Avanzar al inicio del bloque de operaciones
+                bloque += "Operaciones = [";
                 abierto++; // Primer corchete abierto
             }
 
