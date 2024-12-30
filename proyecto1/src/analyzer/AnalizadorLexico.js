@@ -185,6 +185,7 @@ class AnalizadorLexico {
                     }
                     break;
                 //C:\Users\eleaz\Desktop\entrada.nlex
+                //C:\Users\eleaz\Desktop\calificacion.nlex
                 case 7: // Comentario de múltiples líneas
                     if (char === '*' && texto[contador + 1] === '/') {
                         lexemaActual += char + '/';

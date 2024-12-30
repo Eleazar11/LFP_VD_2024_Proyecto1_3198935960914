@@ -304,7 +304,7 @@ function mostrarOperacionesFiltradas() {
 
     if (textoFiltrado) {
         console.log('Operaciones filtradas:');
-        console.log(textoFiltrado);  // Muestra solo el bloque de 'Operaciones = [...]'
+        console.log(textoFiltrado);  // Muestra todo el bloque de 'Operaciones = [...]' tal cual está en el texto
     } else {
         console.log('No se pudo encontrar el bloque de operaciones.');
     }
