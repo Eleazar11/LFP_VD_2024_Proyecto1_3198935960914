@@ -33,6 +33,7 @@ function showMenu() {
     console.log('4. Generar reportes HTML');
     console.log('5. Analizar operaciones');
     console.log('6. Generar grafo');
+    console.log('7. Mostrar operaciones filtradas');
     console.log('0. Salir');
     rl.question('Seleccione una opción: ', (option) => {
         switch (option) {
@@ -53,6 +54,9 @@ function showMenu() {
                 break;
             case '6': 
                 generarGrafo();
+                break;
+            case '7':
+                mostrarOperacionesFiltradas();
                 break;
             case '0':
                 console.log('Saliendo...');
@@ -287,5 +291,25 @@ function generarGrafo() {
     showMenu(); // Volver al menú principal
 }
 
+function mostrarOperacionesFiltradas() {
+    if (!texto) {
+        console.log('Primero debes cargar un archivo.');
+        showMenu();
+        return;
+    }
+
+    console.log('Filtrando texto...');
+    const filtro = new FiltroOperaciones(texto);  // Instancia la clase FiltroOperaciones
+    const textoFiltrado = filtro.filtrarTexto();
+
+    if (textoFiltrado) {
+        console.log('Operaciones filtradas:');
+        console.log(textoFiltrado);  // Muestra solo el bloque de 'Operaciones = [...]'
+    } else {
+        console.log('No se pudo encontrar el bloque de operaciones.');
+    }
+
+    showMenu();  // Mostrar el menú
+}
 
 module.exports = { welcomeMessage };

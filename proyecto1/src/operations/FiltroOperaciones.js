@@ -4,22 +4,22 @@ class FiltroOperaciones {
     }
 
     filtrarTexto() {
-        // Eliminar comentarios de una línea
-        let textoFiltrado = this.texto.replace(/\/\/[^\n]*\n/g, '')  // Eliminar comentarios de una línea
-                                      .replace(/\/\*[\s\S]*?\*\//g, ''); // Eliminar comentarios multilínea
+        // Eliminar todo lo que esté entre comentarios /*...*/ o después de ellos
+        let textoFiltrado = this.texto.replace(/\/\*[\s\S]*?\*\//g, '');
 
-        // Encontrar el bloque de 'Operaciones = [...]'
-        const inicio = textoFiltrado.indexOf('Operaciones = [');
-        const fin = textoFiltrado.lastIndexOf(']');
+        // Eliminar las configuraciones específicas
+        textoFiltrado = textoFiltrado.replace(/ConfiguracionesLex\s*=\s*\[[\s\S]*?\]/g, '');
+        textoFiltrado = textoFiltrado.replace(/ConfiguracionesParser\s*=\s*\[[\s\S]*?\]/g, '');
 
-        if (inicio === -1 || fin === -1) {
-            console.error('No se encontró el bloque de operaciones.');
-            return null;
+        // Extraer solo las operaciones
+        const operacionesMatch = textoFiltrado.match(/Operaciones\s*=\s*\[[\s\S]*?\]/);
+        
+        if (operacionesMatch) {
+            return operacionesMatch[0];  // Retorna solo el bloque de Operaciones
+        } else {
+            return null;  // Si no encuentra el bloque de operaciones, retorna null
         }
-
-        // Extraer el bloque de operaciones y devolverlo
-        return textoFiltrado.slice(inicio, fin + 1); // Incluye los corchetes
     }
 }
 
-module.exports = FiltroOperaciones; // Exportar la clase si es necesario
+module.exports = FiltroOperaciones;  // Exportar la clase
