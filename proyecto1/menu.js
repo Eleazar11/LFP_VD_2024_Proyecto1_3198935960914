@@ -237,14 +237,17 @@ function showGenerateHTMLReportsMenu() {
 }
 
 function generarReporteHTMLDeErrores() {
-    const errores = analizador.errores;
-    if (errores.length === 0) {
-        console.log('No se encontraron errores o no ha agregado el archivo.');
+    const erroresLexicos = analizador.errores; // Errores léxicos
+    const erroresSemanticos = sintactico.errores; // Errores semánticos
+
+    if (erroresLexicos.length === 0 && erroresSemanticos.length === 0) {
+        console.log('No se encontraron errores léxicos ni semánticos, o no ha agregado el archivo.');
     } else {
-        GeneradorDeReportesHTMLErrores.generarReporteHTML('Errores', errores);
+        GeneradorDeReportesHTMLErrores.generarReporteHTML('Errores', erroresLexicos, erroresSemanticos);
     }
     showGenerateHTMLReportsMenu();
 }
+
 
 function generarReporteHTMLDeTokens() {
     const tokens = analizador.obtenerTablaDeTokens();

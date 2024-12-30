@@ -3,9 +3,12 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const path = require('path');
 const AnalizadorLexico = require('./src/analyzer/AnalizadorLexico');
+const AnalizadorSintactico = require('./src/analyzer/AnalizadorSintactico');
 const FileLoader = require('./src/loaders/FileLoader');
 const FiltroOperaciones = require('./src/operations/FiltroOperaciones');
 const OperacionesParser = require('./src/operations/OperacionesParser');
+const GeneradorDeReportesHTMLErrores = require('./src/analyzer/GeneradorDeReportesHTMLErrores');
+const GeneradorDeReportesHTMLTokens = require('./src/analyzer/GeneradorDeReportesHTMLTokens');
 
 const app = express();
 const port = 3000;
@@ -15,6 +18,7 @@ app.use(bodyParser.text());  // Esto asegura que el cuerpo de las solicitudes se
 
 // Instanciamos el analizador léxico y el cargador de archivos
 const analizador = new AnalizadorLexico();
+const sintactico = new AnalizadorSintactico();
 const fileLoader = new FileLoader();
 
 // Variable global para almacenar el contenido del archivo
@@ -38,27 +42,38 @@ app.post('/loadFile', (req, res) => {
     });
 });
 
-// Ruta para analizar el archivo
+// para analizar el archivo
 app.post('/analyzeFile', (req, res) => {
     if (!texto) {
         return res.status(400).json({ message: 'Primero debes cargar un archivo' });
     }
 
-    // Analizamos el archivo
-    analizador.reset(); // Limpiar cualquier análisis anterior
+    // Limpieza previa de los analizadores
+    analizador.reset(); 
+    sintactico.reset();
+
+    // Realizamos el análisis léxico
     analizador.analizarTexto(texto);
 
-    // Obtenemos los lexemas y errores
+    // Obtenemos los resultados del análisis léxico
     const lexemas = analizador.obtenerTablaDeLexemas();
-    const errores = analizador.errores;
+    const erroresLexicos = analizador.errores;
+
+    // Realizamos el análisis sintáctico
+    sintactico.analizarTexto(texto);
+
+    // Obtenemos los resultados del análisis sintáctico
+    const erroresSintacticos = sintactico.errores;
 
     // Respondemos con los resultados del análisis
     res.status(200).json({
         message: 'Análisis completado',
         lexemas: lexemas,
-        errores: errores
+        erroresLexicos: erroresLexicos,
+        erroresSintacticos: erroresSintacticos
     });
 });
+
 
 // Ruta para filtrar y procesar las operaciones
 app.post('/filterAndProcessOperations', (req, res) => {
@@ -103,6 +118,62 @@ app.post('/filterAndProcessOperations', (req, res) => {
         message: 'Operaciones procesadas con éxito.',
         operaciones: operaciones,
         resultados: resultados
+    });
+});
+
+app.post('/generateErrorReport', (req, res) => {
+    // Obtener errores léxicos y semánticos
+    const erroresLexicos = analizador.errores || []; // Errores léxicos
+    const erroresSemanticos = sintactico.errores || []; // Errores semánticos
+
+    if (erroresLexicos.length === 0 && erroresSemanticos.length === 0) {
+        return res.status(400).json({ message: 'No se encontraron errores léxicos ni semánticos, o no se ha cargado un archivo.' });
+    }
+
+    // Generar el reporte HTML
+    const reporteHTML = GeneradorDeReportesHTMLErrores.generarReporteHTML('Errores', erroresLexicos, erroresSemanticos);
+
+    // Guardar el reporte en un archivo
+    const reportePath = path.resolve(__dirname, './src/reports/html/reporte_errores.html');
+    fs.writeFileSync(reportePath, reporteHTML);
+
+    // Enviar el archivo como respuesta
+    res.status(200).sendFile(reportePath, (err) => {
+        if (err) {
+            console.error('Error al enviar el reporte:', err);
+            res.status(500).json({ message: 'Error al generar el reporte.' });
+        } else {
+            console.log('Reporte enviado exitosamente.');
+        }
+    });
+});
+
+
+app.post('/generateTokenReport', (req, res) => {
+    // Obtener los tokens del analizador
+    const tokens = analizador.obtenerTablaDeTokens();
+
+    if (!tokens || tokens.length === 0) {
+        return res.status(400).json({ message: 'No se encontraron tokens o no se ha analizado el archivo.' });
+    }
+
+    // Generar el reporte HTML
+    const reporteHTML = GeneradorDeReportesHTMLTokens.generarReporteHTML('Tokens', tokens);
+
+    // Guardar el reporte en un archivo temporal
+    const fs = require('fs');
+    const path = require('path');
+    const reportePath = path.join(__dirname, 'reportes', 'reporte_tokens.html');
+    fs.writeFileSync(reportePath, reporteHTML);
+
+    // Enviar el archivo como respuesta
+    res.status(200).sendFile(reportePath, (err) => {
+        if (err) {
+            console.error('Error al enviar el reporte:', err);
+            res.status(500).json({ message: 'Error al generar el reporte.' });
+        } else {
+            console.log('Reporte de tokens enviado exitosamente.');
+        }
     });
 });
 
