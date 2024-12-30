@@ -4,6 +4,8 @@ const fs = require('fs');
 const path = require('path');
 const AnalizadorLexico = require('./src/analyzer/AnalizadorLexico');
 const FileLoader = require('./src/loaders/FileLoader');
+const FiltroOperaciones = require('./src/operations/FiltroOperaciones');
+const OperacionesParser = require('./src/operations/OperacionesParser');
 
 const app = express();
 const port = 3000;
@@ -17,8 +19,7 @@ const fileLoader = new FileLoader();
 
 // Variable global para almacenar el contenido del archivo
 let texto = '';
-/*
-*/
+
 // Ruta para cargar el archivo
 app.post('/loadFile', (req, res) => {
     const filePath = req.body.trim(); // Recibimos la ruta como texto plano
@@ -56,6 +57,52 @@ app.post('/analyzeFile', (req, res) => {
         message: 'Análisis completado',
         lexemas: lexemas,
         errores: errores
+    });
+});
+
+// Ruta para filtrar y procesar las operaciones
+app.post('/filterAndProcessOperations', (req, res) => {
+    if (!texto) {
+        return res.status(400).json({ message: 'Primero debes cargar un archivo.' });
+    }
+
+    // Paso 1: Filtrar las operaciones
+    console.log('Filtrando texto...');
+    const filtro = new FiltroOperaciones(texto); // Instancia la clase FiltroOperaciones
+    const textoFiltrado = filtro.filtrarTexto();
+
+    if (!textoFiltrado) {
+        return res.status(400).json({ message: 'No se pudo encontrar el bloque de operaciones.' });
+    }
+
+    console.log('Operaciones filtradas:');
+    console.log(textoFiltrado);
+
+    // Paso 2: Procesar las operaciones
+    console.log('Procesando operaciones del archivo...');
+    const parser = new OperacionesParser(textoFiltrado); // Instancia la clase OperacionesParser
+
+    const operaciones = parser.parsearOperaciones();
+    if (!operaciones) {
+        return res.status(400).json({ message: 'No se pudieron procesar las operaciones.' });
+    }
+
+    console.log('Operaciones extraídas:');
+    console.log(JSON.stringify(operaciones, null, 2)); // Muestra el JSON en consola con formato
+
+    // Procesar las operaciones
+    const resultados = parser.procesarOperaciones(operaciones);
+
+    console.log('Resultados de las operaciones:');
+    resultados.forEach((resultado, index) => {
+        console.log(`${index + 1}.- ${resultado}`);
+    });
+
+    // Respuesta exitosa con resultados
+    res.status(200).json({
+        message: 'Operaciones procesadas con éxito.',
+        operaciones: operaciones,
+        resultados: resultados
     });
 });
 
