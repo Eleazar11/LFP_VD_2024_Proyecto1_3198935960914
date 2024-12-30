@@ -157,17 +157,14 @@ app.post('/generateTokenReport', (req, res) => {
         return res.status(400).json({ message: 'No se encontraron tokens o no se ha analizado el archivo.' });
     }
 
-    // Generar el reporte HTML
-    const reporteHTML = GeneradorDeReportesHTMLTokens.generarReporteHTML('Tokens', tokens);
+    // Generar el reporte HTML y obtener la ruta
+    const reportePath = GeneradorDeReportesHTMLTokens.generarReporteHTML('Tokens', tokens);
 
-    // Guardar el reporte en un archivo temporal
-    const fs = require('fs');
-    const path = require('path');
-    const reportePath = path.join(__dirname, 'reportes', 'reporte_tokens.html');
-    fs.writeFileSync(reportePath, reporteHTML);
+    // Construir la ruta absoluta del archivo
+    const rutaAbsoluta = path.resolve(reportePath);
 
     // Enviar el archivo como respuesta
-    res.status(200).sendFile(reportePath, (err) => {
+    res.status(200).sendFile(rutaAbsoluta, (err) => {
         if (err) {
             console.error('Error al enviar el reporte:', err);
             res.status(500).json({ message: 'Error al generar el reporte.' });

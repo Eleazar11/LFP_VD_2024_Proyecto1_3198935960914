@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 
 class GeneradorDeReportesHTMLTokens {
     static generarReporteHTML(nombreArchivo, datos) {
@@ -11,10 +12,10 @@ class GeneradorDeReportesHTMLTokens {
             .toString()
             .padStart(2, '0')}-${fechaActual.getSeconds().toString().padStart(2, '0')}`;
 
+        // Generar la ruta del archivo HTML
         const ruta = `./src/reports/html/Tokens_${marcaDeTiempo}.html`;
 
-        const contenidoHTML = `
-<!DOCTYPE html>
+        const contenidoHTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -51,8 +52,12 @@ class GeneradorDeReportesHTMLTokens {
 </body>
 </html>`;
 
+        // Escribir el archivo HTML en la ruta especificada
         fs.writeFileSync(ruta, contenidoHTML, 'utf-8');
         console.log(`Reporte HTML de Tokens generado: ${ruta}`);
+
+        // Retornar la ruta del archivo generado
+        return ruta;
     }
 }
 
