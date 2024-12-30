@@ -4,6 +4,8 @@ class OperacionesParser {
     }
 
     parsearOperaciones() {
+        //mostrar en cosola el contenido de texto como viene por defecto
+        console.log('Texto original:', this.texto, 'caracteres.');
         // Paso 1: Eliminar comentarios (en caso de haberlos)
         let textoSinComentarios = this.texto
             .replace(/\/\/[^\n]*\n/g, '') // Elimina comentarios de una línea
