@@ -1,12 +1,15 @@
 const readline = require('readline');
 const FileLoader = require('./src/loaders/FileLoader');
 const AnalizadorLexico = require('./src/analyzer/AnalizadorLexico'); // Importamos el analizador
+const AnalizadorSintactico = require('./src/analyzer/AnalizadorSintactico'); // Importamos el analizador sintáctico
 const GeneradorDeReportes = require('./src/analyzer/GeneradorDeReportes'); // Importamos el generador de reportes
 const GeneradorDeReportesHTMLErrores = require('./src/analyzer/GeneradorDeReportesHTMLErrores');
 const GeneradorDeReportesHTMLTokens = require('./src/analyzer/GeneradorDeReportesHTMLTokens');
 const OperacionesParser = require('./src/operations/OperacionesParser');
 const GraphGenerator = require('./src/operations/GraphGenerator');
 const FiltroOperaciones = require('./src/operations/FiltroOperaciones');
+//const AnalizadorSintactico = require('./src/analyzerSintactico/AnalizadorSintactico');
+const { text } = require('stream/consumers');
 
 
 const rl = readline.createInterface({
@@ -16,6 +19,7 @@ const rl = readline.createInterface({
 
 const fileLoader = new FileLoader();
 const analizador = new AnalizadorLexico(); // Instanciamos el analizador léxico
+const sintactico = new AnalizadorSintactico();
 let texto = ``; // Variable global para almacenar el contenido del archivo
 
 function welcomeMessage() {
@@ -58,6 +62,10 @@ function showMenu() {
                 break;
             case '7':
                 mostrarOperacionesFiltradas();
+                break;
+            case '8':
+                //iniciarAnalisisSintactico();
+                console.log('Opción no disponible');
                 break;
             case '0':
                 console.log('Saliendo...');
@@ -140,6 +148,18 @@ function analizarArchivo() {
 
     console.log('Errores léxicos encontrados:');
     analizador.errores.forEach(error => console.log(error));
+
+    // Ahora analizamos sintácticamente
+    sintactico.reset(); // Limpiamos los errores sintácticos previos
+    sintactico.analizarTexto(texto); // Llamamos al analizador sintáctico
+
+    console.log('Errores sintácticos encontrados:');
+    const erroresSintacticos = sintactico.errores;
+    if (erroresSintacticos.length > 0) {
+        erroresSintacticos.forEach(error => console.log(error));
+    } else {
+        console.log('No se encontraron errores sintácticos.');
+    }
 
     showMenu();
 }
@@ -353,5 +373,7 @@ function filtrarYRealizarOperaciones() {
 
     showMenu();  // Mostrar el menú
 }
+
+
 
 module.exports = { welcomeMessage };
